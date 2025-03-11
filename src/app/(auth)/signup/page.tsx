@@ -5,17 +5,17 @@ import {UserInput} from "@/app/libs/types";
 import Link from "next/link";
 import {useState} from "react";
 
-const Login = () => {
-    const [message, setMessage] = useState<string>("");
+const SignUp = () => {
+    const [successModal, setSuccessModal] = useState<boolean>(false);
     const {register, handleSubmit, formState} = useForm<UserInput>({
         defaultValues: {
             email: '',
             password: ''
         },
     });
-    const {errors} = formState;
+    const {errors, isSubmitting} = formState;
     const onSubmit = async ({email, password}: UserInput) => {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,8 +25,8 @@ const Login = () => {
         if (!response.ok) {
             throw new Error('Failed to create user');
         }
-        setMessage("User created successfully!");
-        
+        setSuccessModal(true);
+
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex  flex-col gap-5 items-center">
@@ -67,15 +67,22 @@ const Login = () => {
 
             <button className="p-2 w-full rounded-xl bg-white hover:bg-indigo-100 transform duration-500 ease-out
             cursor-pointer">
-                Sign up
+                {isSubmitting ? "Signing up..." : "Sign up"}
             </button>
             <div>
                 Already have an account? <Link href={'/signin'} className="text-purple-950 hover:underline">Sign in
                 here</Link>
             </div>
-            {message}
+            {successModal &&
+                <div
+                    className="absolute top-0 left-0 w-screen h-screen bg-gray-500 overflow-hidden opacity-85 flex justify-center items-center">
+                    <div className="bg-white h-1/3 w-1/3 opacity-100 rounded-2xl flex items-center justify-center p-4">
+                        User Creation Successful,&nbsp;<Link href={"signin"} className="text-indigo-600 cursor-pointer">Click here to login</Link>
+                    </div>
+                </div>
+            }
         </form>
     );
 };
 
-export default Login;
+export default SignUp;
