@@ -1,3 +1,5 @@
+"use client";
+
 import {AuthContextType} from "../../libraries/utils/types.ts";
 import {createContext, useContext} from "react";
 
