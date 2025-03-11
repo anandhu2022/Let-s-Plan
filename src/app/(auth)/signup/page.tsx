@@ -38,7 +38,7 @@ const SignUp = () => {
                     id="email"
                     type="text"
                     className="p-2 w-full rounded-xl bg-white"
-                    placeholder="Username"
+                    placeholder="Email"
                     autoComplete="email"
                     {...register('email', {
                         required: "Username is required"
@@ -70,14 +70,16 @@ const SignUp = () => {
                 {isSubmitting ? "Signing up..." : "Sign up"}
             </button>
             <div>
-                Already have an account? <Link href={'/signin'} className="text-purple-950 hover:underline">Sign in
-                here</Link>
+                Already have an account? <Link href={'/signin'} className="text-purple-950 hover:underline">Sign
+                in </Link>
             </div>
             {successModal &&
                 <div
                     className="absolute top-0 left-0 w-screen h-screen bg-gray-500 overflow-hidden opacity-85 flex justify-center items-center">
                     <div className="bg-white h-1/3 w-1/3 opacity-100 rounded-2xl flex items-center justify-center p-4">
-                        User Creation Successful,&nbsp;<Link href={"signin"} className="text-indigo-600 cursor-pointer">Click here to login</Link>
+                        User Creation Successful,&nbsp;<Link href={"/signin"}
+                                                             className="text-indigo-600 cursor-pointer">Click here to
+                        login</Link>
                     </div>
                 </div>
             }

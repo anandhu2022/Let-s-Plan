@@ -1,7 +1,7 @@
 const Footer = () => {
     return (
         <div>
-            Footer
+            Daily Time sheet
         </div>
     );
 };

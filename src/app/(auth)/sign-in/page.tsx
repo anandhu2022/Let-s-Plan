@@ -3,20 +3,26 @@
 import {useForm} from "react-hook-form";
 import {UserInput} from "@/app/libs/types";
 import Link from "next/link";
+import useAuth from "@/app/context/Auth/useAuth";
+import {useState} from "react";
 
 const Login = () => {
+    const {login} = useAuth();
+    const [loginStatus, setLoginStatus] = useState<{ success: boolean, message: string } | null>(null);
     const {register, handleSubmit, formState} = useForm<UserInput>({
         defaultValues: {
             email: '',
             password: ''
         },
     });
-    const {errors} = formState;
-    const onSubmit = (data: UserInput) => {
-        console.log(data);
+    const {errors, isSubmitting} = formState;
+    const onSubmit = async ({email, password}: UserInput) => {
+
+        const response = await login({email, password});
+        setLoginStatus(response);
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex  flex-col gap-5 items-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 items-center">
 
             <div className="text-2xl text-w">Sign in</div>
 
@@ -54,11 +60,15 @@ const Login = () => {
 
             <button className="p-2 w-full rounded-xl bg-white hover:bg-indigo-100 transform duration-500 ease-out
             cursor-pointer">
-                Sign In
+                {isSubmitting ? "Signing in..." : "Sign in"}
             </button>
             <div>
-                Don't have an account, <Link href={'/signup'} className="text-purple-950 hover:underline">Sign Up</Link>
+                Don&#39;t have an account, <Link href={'/signup'} className="text-purple-950 hover:underline">Sign
+                Up</Link>
             </div>
+            {!loginStatus?.success && (
+                <div className="text-red-600">{loginStatus?.message}</div>
+            )}
         </form>
     );
 };
