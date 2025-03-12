@@ -3,14 +3,17 @@
 import {ReactNode} from "react";
 
 export interface UserProps {
-    id: string;
+    id: number;
     email: string;
     password?: string;
+    username?: string;
 }
 
 export interface UserInput {
+    id?: number;
     email: string;
     password: string;
+    username?: string;
 }
 
 export interface AuthContextProps {
@@ -24,4 +27,14 @@ export interface AuthContextProps {
 
 export interface AuthProviderProps {
     children: ReactNode;
+}
+
+export interface TaskProps {
+    id?: string;
+    title: string;
+    description: string;
+    userId: number | null;
+    date: string;
+    time: number | null;
+
 }
