@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import {useForm} from "react-hook-form";
 import {TaskProps} from "@/app/libs/types";
 import useAuth from "@/app/context/Auth/useAuth";
@@ -8,7 +8,9 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 
-const AddTask = () => {
+const AddTask = ({setFlag, flag}: {
+    setFlag: Dispatch<SetStateAction<boolean>>, flag: boolean
+}) => {
     const {user} = useAuth();
     const [modal, setModal] = useState<{ enabled: boolean, success?: boolean, message?: string; } | null>(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -37,7 +39,7 @@ const AddTask = () => {
                     message: "Missing required fields"
                 };
             }
-            const response: Response = await fetch('/api/add-task', {
+            const response: Response = await fetch('/api/task/add-task', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -59,6 +61,7 @@ const AddTask = () => {
                 });
                 reset();
             }
+            setFlag(!flag);
         } catch (error) {
             console.error("Error submitting task:", error);
             return {

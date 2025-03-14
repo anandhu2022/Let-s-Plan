@@ -3,9 +3,10 @@
 import Card from "@/app/components/Card";
 import AddTask from "@/app/components/AddTask";
 import ViewTasks from "@/app/components/ViewTasks";
+import {useState} from "react";
 
 const Page = () => {
-
+    const [flag, setFlag] = useState(false);
     const addNewTask = () => {
         document.getElementById("add-new-section")?.scrollIntoView({behavior: "smooth"});
     };
@@ -24,12 +25,12 @@ const Page = () => {
             <div id="add-new-section"
                  className="bg-cover bg-center h-screen w-full bg-[url('/banner3.png')] snap-start flex
                      items-center justify-center relative">
-                <AddTask/>
+                <AddTask setFlag={setFlag} flag={flag}/>
             </div>
 
             <div id="view-task-section"
                  className="bg-cover bg-center h-screen w-full bg-[url('/ListingBanner.png')] snap-start">
-                <ViewTasks/>
+                <ViewTasks flag={flag}/>
             </div>
 
         </div>

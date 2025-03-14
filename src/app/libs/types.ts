@@ -30,7 +30,7 @@ export interface AuthProviderProps {
 }
 
 export interface TaskProps {
-    id?: string;
+    id?: number;
     title: string;
     description: string;
     userId: number | null;
