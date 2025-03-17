@@ -19,7 +19,7 @@ const layout = ({children}: { children: ReactNode }) => {
         <body className="flex flex-col h-screen">
         <AuthProvider>
             <div
-                className="min-h-[7%] flex items-center px-6 w-full bg-white/10 backdrop-blur-md shadow-lg fixed top-0 z-50">
+                className="flex items-center px-6 w-full bg-white/10 backdrop-blur-md shadow-lg fixed top-0 z-50">
                 <Header/>
             </div>
             <div className="flex flex-1 bg-indigo-100">{children}</div>

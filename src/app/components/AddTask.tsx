@@ -160,6 +160,7 @@ const AddTask = () => {
                                 <input
                                     id="time"
                                     type="number"
+                                    step="0.05"
                                     className="w-[40%] p-2 mt-1 border border-white/40 rounded-lg
                                     text-white focus:outline-none focus:border-white"
                                     placeholder="Time in Hrs"

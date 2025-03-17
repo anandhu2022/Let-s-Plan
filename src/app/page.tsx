@@ -18,14 +18,17 @@ const Page = () => {
             <TaskProvider>
                 <div
                     id="home-section"
-                    className="bg-cover bg-center h-screen w-full bg-[url('/banner.png')] snap-start relative">
-                    <Cards addNewTask={addNewTask} viewTasks={viewTasks}/>
-                    <Clock/>
+                    className="bg-cover bg-center h-screen w-full bg-[url('/banner.png')] snap-start pt-13">
+                    <div className="flex h-full p-8 md:justify-between">
+                        <Cards addNewTask={addNewTask} viewTasks={viewTasks}/>
+                        <Clock/>
+                    </div>
+
                 </div>
 
                 <div id="add-new-section"
                      className="bg-cover bg-center h-screen w-full bg-[url('/banner3.png')] snap-start flex
-                     items-center justify-center relative">
+                     items-center justify-center pt-13">
                     <AddTask/>
                 </div>
 

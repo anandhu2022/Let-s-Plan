@@ -22,8 +22,7 @@ const Clock = () => {
     }, []);
 
     return (
-        <h1 className="absolute right-10 top-1/10 bg-white shadow-lg rounded-xl p-4 border-t-4
-        border-indigo-600 flex flex-col items-center text-center text-3xl">
+        <h1 className="bg-white shadow-lg rounded-xl p-3 border-t-4 border-indigo-600 text-3xl h-fit">
             {ctime || "Loading..."}
         </h1>
     );

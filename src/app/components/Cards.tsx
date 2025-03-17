@@ -17,15 +17,15 @@ const Cards = ({addNewTask, viewTasks}: { addNewTask?: () => void, viewTasks?: (
                     setTime(data.totalTime);
                 })
         }
-    }, [reloadViewTaskForm]);
+    }, [reloadViewTaskForm, user?.id]);
 
     return (
-        <div className="flex min-w-1/2 h-full px-8 flex-wrap pt-25 flex-row gap-6">
+        <div className="flex flex-wrap flex-row gap-6 h-full">
 
-            <div className="flex flex-col max-w-2/5 gap-6">
+            <div className="flex flex-col gap-6 h-full">
                 <div
-                    className="bg-white shadow-lg rounded-xl p-6 border-t-4 border-red-500 flex flex-col items-center
-                text-center w-full">
+                    className="bg-white shadow-lg rounded-xl p-3 border-t-4 border-red-500 flex flex-col items-center
+                text-center h-full">
                     <h3 className="text-xl font-semibold text-gray-900">Add New Task</h3>
                     <p className="text-gray-600 mt-2 text-sm">Quickly create and manage new tasks.</p>
                     <button
@@ -37,8 +37,8 @@ const Cards = ({addNewTask, viewTasks}: { addNewTask?: () => void, viewTasks?: (
                 </div>
 
                 <div
-                    className="bg-white shadow-lg rounded-xl p-6 border-t-4 border-indigo-600 flex flex-col items-center
-                 text-center w-full">
+                    className="bg-white shadow-lg rounded-xl p-3 border-t-4 border-indigo-600 flex flex-col items-center
+                 text-center h-full">
                     <h3 className="text-xl font-semibold text-gray-900">View Tasks</h3>
                     <p className="text-gray-600 mt-2 text-sm">Check pending and completed tasks.</p>
                     <button
@@ -50,8 +50,8 @@ const Cards = ({addNewTask, viewTasks}: { addNewTask?: () => void, viewTasks?: (
                 </div>
 
                 <div
-                    className="bg-white shadow-lg rounded-xl p-6 border-t-4 border-black flex flex-col items-center
-                text-center w-full">
+                    className="bg-white shadow-lg rounded-xl p-3 border-t-4 border-black flex flex-col items-center
+                text-center h-full">
                     <h3 className="text-xl font-semibold text-gray-900">Dashboard</h3>
                     <p className="text-gray-600 mt-2 text-sm">Track task progress with insights.</p>
                     <Link href={'/dashboard'}>
@@ -63,16 +63,17 @@ const Cards = ({addNewTask, viewTasks}: { addNewTask?: () => void, viewTasks?: (
                     </Link>
                 </div>
             </div>
-            <div className="flex flex-col max-w-2/5 gap-6">
+            <div className="flex flex-col gap-6 h-full">
 
                 <div className="flex flex-row gap-2">
-                    <div className="bg-white shadow-lg rounded-xl p-6 border-t-4 border-red-500 flex flex-col items-center
-                text-center h-fit">
+                    <div className="bg-white shadow-lg rounded-xl p-3 border-t-4 border-red-500 flex flex-col
+                    items-center text-center">
                         <h3 className="text-xl font-semibold text-gray-900">Total Hrs logged today</h3>
-                        <p className="text-gray-600 mt-2 text-2xl">{user?.id ? time ? time + " hours" : "loading" : "Please Login"}</p>
+                        <p className="text-gray-600 mt-2 text-2xl">{user?.id ? time ? time + " hours" :
+                            "loading" : "Please Login"}</p>
                     </div>
-                    <div className="bg-white shadow-lg rounded-xl p-6 border-t-4 border-indigo-600 flex flex-col items-center
-                text-center h-fit">
+                    <div className="bg-white shadow-lg rounded-xl p-3 border-t-4 border-indigo-600 flex flex-col
+                    items-center text-center">
                         <h3 className="text-xl font-semibold text-gray-900">Pending tasks</h3>
                         <p className="text-gray-600 mt-2 text-2xl">Test Data</p>
                     </div>
@@ -80,27 +81,9 @@ const Cards = ({addNewTask, viewTasks}: { addNewTask?: () => void, viewTasks?: (
 
                 <div
                     className="bg-white shadow-lg rounded-xl p-4 border-t-4 border-indigo-600 flex flex-col
-                    text-center h-100 mb-23">
+                    text-center h-full">
                     <h3 className="text-xl font-semibold text-gray-900">Summary</h3>
-                    <div className="flex justify-start flex-col overflow-y-auto max-h-90">
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
-                        <div className="text-left">Functionality for editing the task</div>
-                        <div className="text-left">UI fixes</div>
+                    <div className="flex justify-start flex-col overflow-y-auto">
                         <div className="text-left">Functionality for editing the task</div>
                         <div className="text-left">UI fixes</div>
 
