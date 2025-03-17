@@ -46,7 +46,8 @@ const Login = () => {
                 <input
                     id="password"
                     type="password"
-                    className="p-2 w-full rounded-xl bg-white outline-none focus:ring-2 focus:ring-indigo-400 transition duration-500 ease-out"
+                    className="p-2 w-full rounded-xl bg-white outline-none focus:ring-2
+                     focus:ring-indigo-400 transition duration-500 ease-out"
                     placeholder="Password"
                     autoComplete="current-password"
                     {...register('password', {
@@ -58,13 +59,15 @@ const Login = () => {
                     <div className="text-red-500">{errors.password.message}</div>}
             </div>
 
-            <button className="p-2 w-full rounded-xl bg-white hover:bg-indigo-100 transform duration-500 ease-out
+            <button className="p-2 w-full rounded-xl bg-white hover:bg-indigo-100
+            transform duration-500 ease-out
             cursor-pointer">
                 {isSubmitting ? "Signing in..." : "Sign in"}
             </button>
             <div>
-                Don&#39;t have an account, <Link href={'/signup'} className="text-purple-950 hover:underline">Sign
-                Up</Link>
+                Don&#39;t have an account, <Link href={'/signup'} className="text-purple-950
+                hover:underline">
+                Sign Up</Link>
             </div>
             {!loginStatus?.success && (
                 <div className="text-red-600">{loginStatus?.message}</div>

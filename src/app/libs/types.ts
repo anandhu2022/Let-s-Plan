@@ -3,7 +3,7 @@
 import {ReactNode} from "react";
 
 export interface UserProps {
-    id: number;
+    id?: number;
     email: string;
     password?: string;
     username?: string;
@@ -17,24 +17,29 @@ export interface UserInput {
 }
 
 export interface AuthContextProps {
-    login: () => Promise<{
+    login: ({email, password}: UserProps) => Promise<{
         success: boolean
         message: string,
     }>
     logout: () => void;
     user: UserProps | null;
 }
+export interface TaskContextProps {
+    reloadViewTaskForm: boolean
+    reloadTaskForm: () => void;
+}
 
-export interface AuthProviderProps {
+
+export interface ContextProviderProps {
     children: ReactNode;
 }
 
 export interface TaskProps {
-    id?: number;
+    id?: number | null;
     title: string;
     description: string;
     userId: number | null;
     date: string;
-    time: number | null;
+    time: number;
 
 }

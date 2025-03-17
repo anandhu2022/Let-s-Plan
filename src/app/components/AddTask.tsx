@@ -1,16 +1,16 @@
 import dayjs from "dayjs";
-import {Dispatch, SetStateAction, useState} from "react";
+import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {TaskProps} from "@/app/libs/types";
+import useTask from "@/app/context/Task/useTask";
 import useAuth from "@/app/context/Auth/useAuth";
 import CheckIcon from '@mui/icons-material/Check';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 
-const AddTask = ({setFlag, flag}: {
-    setFlag: Dispatch<SetStateAction<boolean>>, flag: boolean
-}) => {
+const AddTask = () => {
+    const {reloadTaskForm} = useTask();
     const {user} = useAuth();
     const [modal, setModal] = useState<{ enabled: boolean, success?: boolean, message?: string; } | null>(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -20,7 +20,6 @@ const AddTask = ({setFlag, flag}: {
             description: '',
             userId: null,
             date: "",
-            time: null
         },
     });
     const {errors, isSubmitting} = formState;
@@ -28,7 +27,7 @@ const AddTask = ({setFlag, flag}: {
         try {
             const formattedDate: string = selectedDate.format("DD-MM-YYYY");
             console.log(title, description, time, formattedDate);
-            if (!title || !description || !time || !user.id) {
+            if (!title || !description || !time || !user?.id) {
                 setModal({
                     enabled: true,
                     success: false,
@@ -61,7 +60,7 @@ const AddTask = ({setFlag, flag}: {
                 });
                 reset();
             }
-            setFlag(!flag);
+            reloadTaskForm();
         } catch (error) {
             console.error("Error submitting task:", error);
             return {
@@ -77,89 +76,95 @@ const AddTask = ({setFlag, flag}: {
                 className="backdrop-blur-md bg-black/50 border border-white/30 shadow-2xl rounded-xl p-8
                         w-[90%] max-w-md text-white">
                 <h2 className="text-2xl font-semibold mb-4 text-white/90">Add New Task</h2>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-white/80">Task Name</label>
-                        <input
-                            id="title"
-                            type="text"
-                            className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
-                            placeholder="Enter task name"
-                            {...register("title", {
-                                required: "Task name is required",
-                            })}
-                        />
-                        <div className="text-red-500 mt-2">{errors.title?.message}</div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-white/80">Description</label>
-                        <textarea
-                            id="description"
-                            className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
-                            placeholder="Enter task details"
-                            {...register("description", {
-                                required: "Description is required",
-                            })}
-                        />
-                        <div className="text-red-500 mt-2">{errors.description?.message}</div>
-                    </div>
-                    <div className="mb-4 flex flex-col">
-                        <label className="block text-sm font-medium text-white/80">Date and Time</label>
-                        <div className={"flex flex-row gap-3 w-full"}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DesktopDatePicker
-                                    value={selectedDate}
-                                    onChange={(newValue) => {
-                                        if (newValue) setSelectedDate(dayjs(newValue));
-                                    }}
-                                    sx={{
-                                        width: "60%",
-                                        "& .MuiOutlinedInput-root": {
-                                            borderRadius: "8px",
-                                            color: "white",
-                                            backgroundColor: "transparent",
-                                            border: "1px solid rgba(255, 255, 255, 0.4)",
-                                            "&:hover": {
-                                                borderColor: "white",
-                                            },
-                                            "&.Mui-focused": {
-                                                borderColor: "white",
-                                            },
-                                        },
-                                        "& .MuiInputBase-input": {
-                                            color: "white",
-                                        },
-                                        "& .MuiSvgIcon-root": {
-                                            color: "white",
-                                        },
-                                    }}
-                                    slotProps={{
-                                        field: {clearable: true},
-                                    }}
-                                />
-                            </LocalizationProvider>
-
+                {user ?
+                    (<form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-white/80">Task Name</label>
                             <input
-                                id="time"
-                                type="number"
-                                className="w-[40%] p-2 mt-1 border border-white/40 rounded-lg
-                                    text-white focus:outline-none focus:border-white"
-                                placeholder="Time in Hrs"
-                                {...register("time")}
+                                id="title"
+                                type="text"
+                                className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                placeholder="Enter task name"
+                                {...register("title", {
+                                    required: "Task name is required",
+                                })}
                             />
+                            <div className="text-red-500 mt-2">{errors.title?.message}</div>
                         </div>
-                    </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-white/80">Description</label>
+                            <textarea
+                                id="description"
+                                className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                placeholder="Enter task details"
+                                {...register("description", {
+                                    required: "Description is required",
+                                })}
+                                maxLength={255}
+                            />
+                            <div className="text-red-500 mt-2">{errors.description?.message}</div>
+                        </div>
+                        <div className="mb-4 flex flex-col">
+                            <label className="block text-sm font-medium text-white/80">Date and Time</label>
+                            <div className={"flex flex-row gap-3 w-full"}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DesktopDatePicker
+                                        value={selectedDate}
+                                        onChange={(newValue) => {
+                                            if (newValue) setSelectedDate(dayjs(newValue));
+                                        }}
+                                        sx={{
+                                            width: "60%",
+                                            "& .MuiOutlinedInput-root": {
+                                                borderRadius: "8px",
+                                                color: "white",
+                                                backgroundColor: "transparent",
+                                                border: "1px solid rgba(255, 255, 255, 0.4)",
+                                                "&:hover": {
+                                                    borderColor: "white",
+                                                },
+                                                "&.Mui-focused": {
+                                                    borderColor: "white",
+                                                },
+                                            },
+                                            "& .MuiInputBase-input": {
+                                                color: "white",
+                                            },
+                                            "& .MuiSvgIcon-root": {
+                                                color: "white",
+                                            },
+                                        }}
+                                        slotProps={{
+                                            field: {clearable: true},
+                                        }}
+                                    />
+                                </LocalizationProvider>
 
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
+                                <input
+                                    id="time"
+                                    type="number"
+                                    className="w-[40%] p-2 mt-1 border border-white/40 rounded-lg
+                                    text-white focus:outline-none focus:border-white"
+                                    placeholder="Time in Hrs"
+                                    {...register("time")}
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
                                 transition"
-                    >
-                        {isSubmitting ? "Creating Task..." : "Add Task"}
-                    </button>
-                </form>
+                        >
+                            {isSubmitting ? "Creating Task..." : "Add Task"}
+                        </button>
+                    </form>) : (
+                        <div className="text-center  text-sm">
+                            Please login to add tasks
+                        </div>
+                    )}
                 {
                     modal?.enabled && (
                         <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center

@@ -1,24 +1,41 @@
 "use client";
 
+import useAuth from "@/app/context/Auth/useAuth";
+
 const Dashboard = () => {
+    const {logout} = useAuth();
     return (
         <div className="flex h-screen bg-gray-100 pt-20 w-full">
             {/* Sidebar */}
             <aside className="w-64 bg-white shadow-md p-6 flex flex-col">
                 <h2 className="text-2xl font-bold text-red-500">Task Manager</h2>
                 <nav className="mt-6 space-y-4">
-                    <a href="#" className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500 hover:text-white transition">
+                    <a href="#"
+                       className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
+                       hover:text-white transition">
                         Dashboard
                     </a>
-                    <a href="#" className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500 hover:text-white transition">
+                    <a href="#"
+                       className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
+                       hover:text-white transition">
                         Tasks
                     </a>
-                    <a href="#" className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500 hover:text-white transition">
+                    <a href="#"
+                       className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
+                       hover:text-white transition">
                         Reports
                     </a>
-                    <a href="#" className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500 hover:text-white transition">
+                    <a href="#"
+                       className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
+                       hover:text-white transition">
                         Settings
                     </a>
+                    <button
+                        onClick={logout}
+                        className="w-full block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
+                        hover:text-white transition text-left">
+                        Logout
+                    </button>
                 </nav>
             </aside>
 

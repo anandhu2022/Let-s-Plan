@@ -33,7 +33,7 @@ export const POST = async (req: Response) => {
                 httpOnly: true,
                 path: '/',
                 maxAge: 60 * 60 * 24
-            })
+            });
 
             return new NextResponse(JSON.stringify({
                 success: true,
@@ -52,7 +52,12 @@ export const POST = async (req: Response) => {
         }
 
     } catch (err) {
-        return new NextResponse(JSON.stringify({error: err}), {
+        console.error(err);
+        return new NextResponse(JSON.stringify({
+            success: false,
+            message: "An error occurred while processing your request",
+            user: null
+        }), {
             status: 500,
             headers: {
                 'content-type': 'application/json',
