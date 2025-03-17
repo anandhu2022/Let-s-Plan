@@ -1,14 +1,62 @@
 "use client";
 
 import useAuth from "@/app/context/Auth/useAuth";
+import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
+import {TaskProps} from "@/app/libs/types";
 
 const Dashboard = () => {
-    const {logout} = useAuth();
+    const router = useRouter();
+    const {logout, user} = useAuth();
+    const [tasksCounts, setTasksCounts] = useState<{
+        pending: number,
+        onProgress: number,
+        completed: number,
+        total: number,
+        task: TaskProps[]
+    }>({
+        pending: 0,
+        onProgress: 0,
+        completed: 0,
+        total: 0,
+        task: [] as TaskProps[]
+    })
+    useEffect(() => {
+        if (user?.id) {
+            fetch(`/api/task/get-tasks?userId=${user?.id}`)
+                .then(response => response.json())
+                .then(({tasks}) => {
+                    const counts = tasks.reduce((acc: {
+                        completed: number;
+                        pending: number;
+                        onProgress: number;
+                        total: number;
+                        task: TaskProps[] | null
+                    }, task: TaskProps) => {
+                        if (task.taskStatus === "Completed") {
+                            acc.completed += 1;
+                        } else if (task.taskStatus === "Pending") {
+                            acc.pending += 1;
+                        } else if (task.taskStatus === "In Progress") {
+                            acc.onProgress += 1;
+                        }
+                        acc.total += 1;
+                        acc.task = tasks;
+                        return acc;
+                    }, {pending: 0, onProgress: 0, completed: 0, total: 0});
+                    const sortedTasks: TaskProps[] = tasks.sort((a: { id: number; }, b: { id: number; }) => b.id - a.id);
+                    console.log(sortedTasks);
+                    setTasksCounts(counts);
+                })
+                .catch(error => console.error("Error fetching tasks:", error));
+        }
+    }, [user?.id]);
+
     return (
         <div className="flex h-screen bg-gray-100 pt-20 w-full">
             {/* Sidebar */}
-            <aside className="w-64 bg-white shadow-md p-6 flex flex-col">
-                <h2 className="text-2xl font-bold text-red-500">Task Manager</h2>
+            <aside className="min-w-1/6 bg-white shadow-md p-6 flex flex-col">
+                <h2 className="text-2xl font-bold text-red-500">Welcome {user?.username}</h2>
                 <nav className="mt-6 space-y-4">
                     <a href="#"
                        className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
@@ -31,7 +79,10 @@ const Dashboard = () => {
                         Settings
                     </a>
                     <button
-                        onClick={logout}
+                        onClick={() => {
+                            logout();
+                            router.push('/sign-in');
+                        }}
                         className="w-full block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
                         hover:text-white transition text-left">
                         Logout
@@ -39,29 +90,31 @@ const Dashboard = () => {
                 </nav>
             </aside>
 
-            {/* Main Content */}
-            <main className="flex-1 p-8">
+            <main className="flex-1 p-8 w-full">
                 <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
 
-                {/* Stats Section */}
-                <div className="grid grid-cols-3 gap-6 mt-6">
-                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-red-500">
+                <div className="flex gap-6 mt-6 max-w-full">
+                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-red-500 w-full">
                         <h2 className="text-xl font-semibold text-gray-900">Total Tasks</h2>
-                        <p className="text-3xl font-bold text-gray-800 mt-2">24</p>
+                        <p className="text-3xl font-bold text-gray-800 mt-2">{tasksCounts.total}</p>
                     </div>
 
-                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-indigo-600">
+                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-indigo-600 w-full">
                         <h2 className="text-xl font-semibold text-gray-900">Completed</h2>
-                        <p className="text-3xl font-bold text-gray-800 mt-2">15</p>
+                        <p className="text-3xl font-bold text-gray-800 mt-2">{tasksCounts.completed}</p>
                     </div>
 
-                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-black">
+                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-red-500 w-full">
+                        <h2 className="text-xl font-semibold text-gray-900">In Progress</h2>
+                        <p className="text-3xl font-bold text-gray-800 mt-2">{tasksCounts.onProgress}</p>
+                    </div>
+
+                    <div className="p-6 bg-white shadow-lg rounded-xl border-t-4 border-black w-full">
                         <h2 className="text-xl font-semibold text-gray-900">Pending</h2>
-                        <p className="text-3xl font-bold text-gray-800 mt-2">9</p>
+                        <p className="text-3xl font-bold text-gray-800 mt-2">{tasksCounts.pending}</p>
                     </div>
                 </div>
 
-                {/* Task List */}
                 <div className="mt-8 bg-white p-6 shadow-lg rounded-xl">
                     <h2 className="text-2xl font-semibold text-gray-900 mb-4">Recent Tasks</h2>
                     <div className="space-y-4">

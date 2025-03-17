@@ -16,8 +16,8 @@ export const POST = async () => {
             const user = await prisma.user.findUnique({
                 where: {id: Number(userId)}
             });
-            if (!user) return new NextResponse(JSON.stringify({user: null}),{status: 401});
-            return new NextResponse(JSON.stringify({user: {id: user.id, email: user.email}}), {
+            if (!user) return new NextResponse(JSON.stringify({user: null}), {status: 401});
+            return new NextResponse(JSON.stringify({user: {id: user.id, email: user.email, username: user.username}}), {
                 status: 200,
                 headers: {
                     'Content-Type': 'application/json',

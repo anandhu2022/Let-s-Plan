@@ -4,6 +4,7 @@ import {useForm} from "react-hook-form";
 import {UserInput} from "@/app/libs/types";
 import Link from "next/link";
 import {useState} from "react";
+import {Button, TextField} from "@mui/material";
 
 const SignUp = () => {
     const [successModal, setSuccessModal] = useState<boolean>(false);
@@ -14,13 +15,13 @@ const SignUp = () => {
         },
     });
     const {errors, isSubmitting} = formState;
-    const onSubmit = async ({email, password}: UserInput) => {
+    const onSubmit = async ({email, password, username}: UserInput) => {
         const response = await fetch('/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({email, password})
+            body: JSON.stringify({email, password, username})
         });
         if (!response.ok) {
             throw new Error('Failed to create user');
@@ -29,54 +30,89 @@ const SignUp = () => {
 
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex  flex-col gap-5 items-center">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 items-center">
 
             <div className="text-2xl text-w">Sign up</div>
 
             <div className="w-full">
-                <input
+
+                <TextField
                     id="email"
-                    type="text"
-                    className="p-2 w-full rounded-xl bg-white"
-                    placeholder="Email"
-                    autoComplete="email"
+                    label="Email"
+                    variant="outlined"
+                    className="p-2 w-full rounded-xl"
+                    error={!!errors.email}
+                    helperText={errors.email?.message || ""}
                     {...register('email', {
-                        required: "Username is required"
+                        required: "Email is required"
                     })}
                 />
 
-                {errors.email?.message &&
-                    <div className="text-purple-950">{errors.email.message}</div>}
             </div>
 
             <div className="w-full">
-                <input
+                <TextField
+                    id="username"
+                    label="Username"
+                    variant="outlined"
+                    autoComplete="username"
+                    className="p-2 w-full rounded-xl"
+                    error={!!errors.username}
+                    helperText={errors.username?.message || ""}
+                    {...register('username', {
+                        required: "Username is required"
+                    })}
+                />
+            </div>
+
+            <div className="w-full">
+                <TextField
                     id="password"
+                    label="Password"
+                    variant="outlined"
+                    className="p-2 w-full rounded-xl"
                     type="password"
-                    className="p-2 w-full rounded-xl bg-white"
-                    placeholder="Password"
                     autoComplete="current-password"
+                    error={!!errors.password}
+                    helperText={errors.password?.message || ""}
                     {...register('password', {
                         required: "Password is required",
                     })}
                 />
-
-                {errors.password?.message &&
-                    <div className="text-purple-950">{errors.password.message}</div>}
             </div>
 
-            <button className="p-2 w-full rounded-xl bg-white hover:bg-indigo-100 transform duration-500 ease-out
-            cursor-pointer">
+            <div className="w-full">
+                <TextField
+                    id="confirm-password"
+                    label="Confirm Password"
+                    variant="outlined"
+                    className="p-2 w-full rounded-xl"
+                    type="password"
+                    autoComplete="current-password"
+                    error={!!errors.password}
+                    helperText={errors.password?.message || ""}
+                    {...register('password', {
+                        required: "Password is required",
+                    })}
+                />
+            </div>
+
+            <Button
+                type="submit"
+                className="p-2 w-full rounded-xl min-h-13"
+                variant={"outlined"}
+                color={"info"}
+            >
                 {isSubmitting ? "Signing up..." : "Sign up"}
-            </button>
+            </Button>
             <div>
-                Already have an account? <Link href={'/signin'} className="text-purple-950 hover:underline">Sign
+                Already have an account? <Link href={'/sign-in'} className="text-purple-950 hover:underline">Sign
                 in </Link>
             </div>
             {successModal &&
                 <div
-                    className="absolute top-0 left-0 w-screen h-screen bg-gray-500 overflow-hidden opacity-85 flex justify-center items-center">
-                    <div className="bg-white h-1/3 w-1/3 opacity-100 rounded-2xl flex items-center justify-center p-4">
+                    className="absolute top-0 left-0 w-screen h-screen bg-gray-500 overflow-hidden flex justify-center items-center z-2">
+                    <div className="bg-white h-1/3 w-1/3 rounded-2xl flex items-center justify-center p-4">
                         User Creation Successful,&nbsp;<Link href={"/sign-in"}
                                                              className="text-indigo-600 cursor-pointer">Click here to
                         login</Link>

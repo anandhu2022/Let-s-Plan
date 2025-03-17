@@ -13,7 +13,7 @@ export interface UserInput {
     id?: number;
     email: string;
     password: string;
-    username?: string;
+    username: string;
 }
 
 export interface AuthContextProps {

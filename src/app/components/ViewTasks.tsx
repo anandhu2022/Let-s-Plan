@@ -43,7 +43,7 @@ const ViewTasks = () => {
         reloadTaskForm();
     };
 
-    const {register, handleSubmit, formState, reset, watch} = useForm<TaskProps>({
+    const {register, handleSubmit, formState, reset} = useForm<TaskProps>({
         defaultValues: {
             title: editModal.title,
             description: editModal.description,
@@ -150,14 +150,14 @@ const ViewTasks = () => {
                                 </tr>
                             ))) : (
                                 <tr>
-                                    <td colSpan={5} className="py-3 px-4 text-center">
+                                    <td colSpan={6} className="py-3 px-4 text-center">
                                         No tasks found
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={5} className="py-3 px-4 text-center">
+                                <td colSpan={6} className="py-3 px-4 text-center">
                                     You have to login for viewing tasks
                                 </td>
                             </tr>

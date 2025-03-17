@@ -41,6 +41,7 @@ export const POST = async (req: Response) => {
                 user: {
                     id: user.id,
                     email: user.email,
+                    username: user.username,
                 }
             }), {
                 status: 200,
