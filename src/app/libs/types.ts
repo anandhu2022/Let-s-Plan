@@ -38,6 +38,7 @@ export interface TaskProps {
     id?: number | null;
     title: string;
     description: string;
+    taskStatus: string;
     userId: number | null;
     date: string;
     time: number;

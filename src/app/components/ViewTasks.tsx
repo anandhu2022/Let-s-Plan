@@ -15,6 +15,7 @@ const ViewTasks = () => {
         status: boolean,
         title: string,
         description: string,
+        taskStatus: string,
         date: string,
         time: number
     }>({
@@ -22,6 +23,7 @@ const ViewTasks = () => {
         status: false,
         title: "",
         description: "",
+        taskStatus: "",
         date: "",
         time: 0
     });
@@ -41,7 +43,7 @@ const ViewTasks = () => {
         reloadTaskForm();
     };
 
-    const {register, handleSubmit, formState, reset} = useForm<TaskProps>({
+    const {register, handleSubmit, formState, reset, watch} = useForm<TaskProps>({
         defaultValues: {
             title: editModal.title,
             description: editModal.description,
@@ -51,22 +53,23 @@ const ViewTasks = () => {
     });
     const {errors, isSubmitting} = formState;
 
-    const handleEdit = ({id = null, title, description, date, time}: TaskProps) => {
+    const handleEdit = ({id = null, title, description, taskStatus, date, time}: TaskProps) => {
         const formattedDate = date.split('-').reverse().join('-');
         setEditModal({
             status: true,
             id,
             title,
             description,
+            taskStatus,
             date: formattedDate,
             time
         });
 
-        reset({id, title, description, date: formattedDate, time});
+        reset({id, title, description, taskStatus, date: formattedDate, time});
     };
 
     const onSubmit = async (
-        {id, title, description, date, time}: TaskProps) => {
+        {id, title, description, taskStatus, date, time}: TaskProps) => {
         const formattedDate = date.split('-').reverse().join('-');
         const result = await fetch("http://localhost:3000/api/task/edit-task", {
             method: 'PUT',
@@ -77,7 +80,8 @@ const ViewTasks = () => {
                 id,
                 title,
                 description,
-                date : formattedDate,
+                taskStatus,
+                date: formattedDate,
                 time: Number(time),
             }),
         });
@@ -90,6 +94,7 @@ const ViewTasks = () => {
             status: false,
             title: "",
             description: "",
+            taskStatus: "",
             date: "",
             time: 0,
         });
@@ -99,14 +104,15 @@ const ViewTasks = () => {
     return (
         <div className={"flex justify-center items-center flex-col h-screen"}>
 
-            <div className="shadow-lg rounded-lg overflow-x-auto max-h-[60%] max-w-[50%] bg-white">
+            <div className="shadow-lg rounded-lg overflow-x-auto max-h-[60%] max-w-[60%] bg-white">
                 <table className="w-full border-collapse bg-white shadow-md rounded-lg">
                     <thead className="bg-gray-200 text-gray-700 uppercase text-sm">
                     <tr>
                         <th className="py-3 px-4 text-left">Task Name</th>
                         <th className="py-3 px-4 text-left">Description</th>
                         <th className="py-3 px-4 text-left">Date</th>
-                        <th className="py-3 px-4 text-left">Time</th>
+                        <th className="py-3 px-4 text-left normal-case">Time (Hrs)</th>
+                        <th className="py-3 px-4 text-left">Status</th>
                         <th className="py-3 px-4 text-center">Actions</th>
                     </tr>
                     </thead>
@@ -119,6 +125,14 @@ const ViewTasks = () => {
                                     <td className="py-3 px-4">{task.description}</td>
                                     <td className="py-3 px-4">{task.date}</td>
                                     <td className="py-3 px-4">{task.time}</td>
+                                    <td className="py-3 px-4">
+                                    <span className={`px-3 py-1 text-xs font-medium rounded-full 
+                                        ${task.taskStatus === "Completed" ? "bg-green-600 text-white"
+                                        : task.taskStatus === "In Progress" ? "bg-gray-500 text-white"
+                                            : "bg-red-500 text-white"}`}>
+                                        {task.taskStatus}
+                                    </span>
+                                    </td>
                                     <td className="py-3 px-4 text-center">
                                         <button
                                             onClick={() => {
@@ -154,7 +168,8 @@ const ViewTasks = () => {
             {editModal?.status && (
                 <div className={"fixed top-0 left-0 h-screen w-screen backdrop-blur z-50 flex " +
                     "justify-center items-center"}>
-                    <div className={"min-h-1/2 min-w-1/4 bg-white flex p-4 rounded-2xl flex-col"}>
+                    <div
+                        className={"min-h-1/2 min-w-1/4 bg-black/40 b flex p-4 rounded-2xl flex-col ring-2 ring-gray-600 text-white"}>
                         <div className={"flex justify-between"}>
 
                             <h2 className={"text-xl"}>Edit task</h2>
@@ -168,6 +183,7 @@ const ViewTasks = () => {
                                         status: false,
                                         title: '',
                                         description: '',
+                                        taskStatus: '',
                                         date: '',
                                         time: 0
                                     })
@@ -177,59 +193,75 @@ const ViewTasks = () => {
                         <form className={"flex flex-col space-y-4 gap-2 p-3"}
                               onSubmit={handleSubmit(onSubmit)}
                         >
-                            <div className={"flex gap-2 flex-col"}>
-                                <label className={"font-medium text-gray-700"} htmlFor="title">
-                                    Title
-                                </label>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-white/80">Task Name</label>
                                 <input
                                     id="title"
-                                    className={"p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block " +
-                                        "w-full sm:text-sm border-gray-300 rounded-md"}
+                                    type="text"
+                                    className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                    placeholder="Enter task name"
                                     {...register("title", {
-                                        required: "title is required",
+                                        required: "Task name is required",
                                     })}
                                 />
-                                {errors.title && (<p className={"text-red-500"}>{errors.title.message}</p>)}
+                                <div className="text-red-500 mt-2">{errors.title?.message}</div>
                             </div>
                             <div className={"flex gap-2 flex-col"}>
-                                <label className={"font-medium text-gray-700"} htmlFor="title">
+                                <label className={"font-medium"} htmlFor="title">
                                     Description
                                 </label>
                                 <textarea
                                     id="description"
-                                    className={"p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block " +
-                                        "w-full sm:text-sm border-gray-300 rounded-md"}
+                                    className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
                                     {...register("description", {
                                         required: "description is required",
                                     })}
                                 />
                                 {errors.description && (<p className={"text-red-500"}>{errors.description.message}</p>)}
                             </div>
+
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-white/80">Status</label>
+                                <select
+                                    id="taskStatus"
+                                    className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                    {...register("taskStatus")}
+                                >
+                                    <option className="bg-black text-white" value="Pending">Pending</option>
+                                    <option className="bg-black text-white" value="In Progress">In Progress</option>
+                                    <option className="bg-black text-white" value="Completed">Completed</option>
+                                </select>
+                                <div className="text-red-500 mt-2">{errors.taskStatus?.message}</div>
+                            </div>
+
                             <div className={"flex gap-2 flex-col"}>
-                                <label className={"font-medium text-gray-700"} htmlFor="title">
+                                <label className={"font-medium"} htmlFor="title">
                                     Date and Time
                                 </label>
-                                <div className={"flex flex-row gap-1"}>
-                                    <div className={"flex flex-col"}>
+                                <div className={"flex flex-row gap-1 w-full"}>
+                                    <div className={"flex flex-col w-[70%]"}>
                                         <input
                                             id="date"
                                             type="date"
-                                            className={"p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block " +
-                                                "w-full sm:text-sm border-gray-300 rounded-md"}
+                                            className="p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
                                             {...register("date", {
                                                 required: "date is required",
                                             })}
                                         />
                                         {errors.date && (<p className={"text-red-500"}>{errors.date.message}</p>)}
                                     </div>
-                                    <div className={"flex flex-col"}>
+                                    <div className={"flex flex-col w-[30%]"}>
                                         <input
                                             id="time"
                                             type="number"
-                                            step="0.1"
+                                            step="0.05"
                                             placeholder="Time in hours"
-                                            className={"p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block " +
-                                                "w-full sm:text-sm border-gray-300 rounded-md"}
+                                            className="p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
                                             {...register("time", {
                                                 required: "Time is required",
                                             })}

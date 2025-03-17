@@ -22,11 +22,12 @@ model User {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   title       String
-  description String?
-  date        String?
-  time        Decimal?
-  userId      Int?
-  user        User?    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  description String
+  taskStatus  String
+  date        String
+  time        Decimal
+  userId      Int
+  user        User    @relation(fields: [userId], references: [id], onDelete: NoAction)
 }

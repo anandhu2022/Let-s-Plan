@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export const POST = async (req: Request) => {
     try {
-        const {title, description, userId, date, time}: TaskProps = await req.json();
+        const {title, description, taskStatus, userId, date, time}: TaskProps = await req.json();
         if (!title || !description || !userId || !date || !time) {
             return NextResponse.json({error: "Missing required fields"}, {status: 400,});
         }
@@ -14,6 +14,7 @@ export const POST = async (req: Request) => {
             data: {
                 title,
                 description,
+                taskStatus,
                 userId,
                 date,
                 time,

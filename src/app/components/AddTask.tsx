@@ -23,11 +23,11 @@ const AddTask = () => {
         },
     });
     const {errors, isSubmitting} = formState;
-    const onSubmit = async ({title, description, time}: TaskProps) => {
+    const onSubmit = async ({title, description, time, taskStatus}: TaskProps) => {
         try {
             const formattedDate: string = selectedDate.format("DD-MM-YYYY");
             console.log(title, description, time, formattedDate);
-            if (!title || !description || !time || !user?.id) {
+            if (!title || !description || !time || !user?.id || !taskStatus) {
                 setModal({
                     enabled: true,
                     success: false,
@@ -46,6 +46,7 @@ const AddTask = () => {
                 body: JSON.stringify({
                     title,
                     description,
+                    taskStatus,
                     userId: user.id,
                     date: formattedDate,
                     time
@@ -105,6 +106,20 @@ const AddTask = () => {
                                 maxLength={255}
                             />
                             <div className="text-red-500 mt-2">{errors.description?.message}</div>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-white/80">Status</label>
+                            <select
+                                id="taskStatus"
+                                className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
+                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                {...register("taskStatus")}
+                            >
+                                <option className="bg-black text-white" value="Pending">Pending</option>
+                                <option className="bg-black text-white" value="In Progress">In Progress</option>
+                                <option className="bg-black text-white" value="Completed">Completed</option>
+                            </select>
+                            <div className="text-red-500 mt-2">{errors.taskStatus?.message}</div>
                         </div>
                         <div className="mb-4 flex flex-col">
                             <label className="block text-sm font-medium text-white/80">Date and Time</label>

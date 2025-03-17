@@ -4,6 +4,7 @@ import Card from "@/app/components/Card";
 import AddTask from "@/app/components/AddTask";
 import ViewTasks from "@/app/components/ViewTasks";
 import TaskProvider from "@/app/context/Task/TaskContext";
+import Clock from "@/app/components/Clock";
 
 const Page = () => {
     const addNewTask = () => {
@@ -17,7 +18,7 @@ const Page = () => {
             <TaskProvider>
                 <div
                     id="home-section"
-                    className="bg-cover bg-center h-screen w-full bg-[url('/banner.png')] snap-start">
+                    className="bg-cover bg-center h-screen w-full bg-[url('/banner.png')] snap-start relative">
                     <Card addNewTask={addNewTask} viewTasks={viewTasks}/>
                 </div>
 
@@ -32,6 +33,7 @@ const Page = () => {
                     <ViewTasks/>
                 </div>
             </TaskProvider>
+            <Clock/>
         </div>
 
     );

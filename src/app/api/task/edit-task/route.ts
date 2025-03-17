@@ -4,8 +4,8 @@ import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 export const PUT = async (request: NextRequest) => {
     try {
-        const {id, title, description, time, date} = await request.json();
-        if (!id || !title || !description || !time || !date) {
+        const {id, title, description, taskStatus, time, date} = await request.json();
+        if (!id || !title || !description || !taskStatus || !time || !date) {
             return new NextResponse(JSON.stringify({error: 'Missing required fields'}), {
                 status: 400,
                 headers: {
@@ -20,6 +20,7 @@ export const PUT = async (request: NextRequest) => {
             data: {
                 title,
                 description,
+                taskStatus,
                 time,
                 date,
             },
