@@ -169,7 +169,7 @@ const ViewTasks = () => {
             </div>
             {editModal?.status && (
                 <div
-                    className="absolute bg-white/95 backdrop-blur flex justify-center items-center h-full w-full rounded-2xl">
+                    className="absolute bg-white/95 backdrop-blur flex justify-center h-full w-full rounded-2xl">
                     <div className="flex p-8 flex-col text-black w-full gap-5">
                         <div className={"flex justify-between p-4"}>
                             <h2 className={"text-xl"}>Edit task</h2>

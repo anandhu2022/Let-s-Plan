@@ -27,11 +27,11 @@ const Sidebar = () => {
                        hover:text-white transition">
                     Add a Task
                 </Link>
-                <a href="#"
+                <Link href="/summary"
                    className="block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
                        hover:text-white transition">
-                    Settings
-                </a>
+                    Summary
+                </Link>
                 <button
                     onClick={() => {
                         logout();

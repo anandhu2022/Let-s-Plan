@@ -42,5 +42,5 @@ export interface TaskProps {
     userId: number | null;
     date: string;
     time: number;
-
 }
+
