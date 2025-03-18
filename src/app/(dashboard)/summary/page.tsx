@@ -32,14 +32,14 @@ const Summary = () => {
         <div className="flex flex-col w-full h-full p-3 gap-3">
             <div className="w-full h-[50%] bg-white/60 rounded-2xl p-5 flex flex-col gap-4">
                 <h2 className="text-xl">Today</h2>
-                <div className="w-full overflow-hidden rounded-2xl shadow-md overflow-y-auto">
+                <div className="w-full rounded-2xl shadow-md overflow-y-auto">
                     <table className="w-full border-collapse">
                         <thead className="bg-gray-200 text-gray-700 uppercase text-sm">
                         <tr>
                             <th className="py-3 px-4 text-left">Task Name</th>
                             <th className="py-3 px-4 text-left">Description</th>
                             <th className="py-3 px-4 text-left normal-case">Time (Hrs)</th>
-                            <th className="py-3 px-4 text-left">Status</th>
+                            <th className="py-3 px-4 text-left min-w-30">Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@ const Summary = () => {
                                             <td className="py-3 px-4">{task.description}</td>
                                             <td className="py-3 px-4">{task.time}</td>
                                             <td className="py-3 px-4">
-                                    <span className={`px-3 py-1 text-xs font-medium rounded-full 
+                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-30 
                                         ${task.taskStatus === "Completed" ? "bg-green-600 text-white"
                                         : task.taskStatus === "In Progress" ? "bg-gray-500 text-white"
                                             : "bg-red-500 text-white"}`}>
@@ -80,14 +80,14 @@ const Summary = () => {
             </div>
             <div className="w-full h-[50%] bg-white/60 rounded-2xl p-5 flex flex-col gap-4">
                 <h2 className="text-xl">Yesterday</h2>
-                <div className="w-full overflow-hidden rounded-2xl shadow-md overflow-y-auto">
+                <div className="w-full rounded-2xl shadow-md overflow-y-auto">
                     <table className="w-full border-collapse">
                         <thead className="bg-gray-200 text-gray-700 uppercase text-sm">
                         <tr>
                             <th className="py-3 px-4 text-left">Task Name</th>
                             <th className="py-3 px-4 text-left">Description</th>
                             <th className="py-3 px-4 text-left normal-case">Time (Hrs)</th>
-                            <th className="py-3 px-4 text-left">Status</th>
+                            <th className="py-3 px-4 text-left min-w-30">Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -100,7 +100,7 @@ const Summary = () => {
                                             <td className="py-3 px-4">{task.description}</td>
                                             <td className="py-3 px-4">{task.time}</td>
                                             <td className="py-3 px-4">
-                                    <span className={`px-3 py-1 text-xs font-medium rounded-full 
+                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-30 
                                         ${task.taskStatus === "Completed" ? "bg-green-600 text-white"
                                         : task.taskStatus === "In Progress" ? "bg-gray-500 text-white"
                                             : "bg-red-500 text-white"}`}>

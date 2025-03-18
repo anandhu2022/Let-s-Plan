@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {TaskProps} from "@/app/libs/types";
 import Clock from "@/app/components/Clock";
 import useTheme from "@/app/context/Theme/useTheme";
+import TotalWorkedHours from "@/app/components/TotalWorkedHours";
 
 const Dashboard = () => {
     const {user} = useAuth();
@@ -61,41 +62,71 @@ const Dashboard = () => {
 
         <div className="h-full flex flex-col gap-4">
             <div className="flex justify-between items-center">
-                <h1 className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>{user?.username && `Welcome ${user.username}`}</h1>
+                <h1 className={`text-xl md:text-2xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>
+                    {user?.username && `Welcome ${user.username}`}
+                </h1>
                 <Clock/>
             </div>
-            <div className="flex gap-6 max-w-full">
-                <div className={`p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg rounded-xl border-t-4 border-red-500 w-full`}>
-                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>Total Tasks</h2>
-                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>{tasksCounts.total}</p>
+            <div className="flex gap-6 max-w-full flex-row flex-wrap">
+
+                <div className="block sm:hidden w-full">
+                    <div className={`p-2 sm:p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
+                rounded-xl border-t-4 border-black-500 flex flex-col flex-1 items-center min-w-25`}>
+                        <TotalWorkedHours/>
+                    </div>
+                </div>
+
+                <div className={`p-2 sm:p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
+                rounded-xl border-t-4 border-red-500 flex flex-col flex-1 items-center min-w-25`}>
+                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>Total
+                        Tasks</h2>
+                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+                        {tasksCounts.total}</p>
                 </div>
 
                 <div
-                    className={`p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg rounded-xl border-t-4 border-indigo-600 w-full`}>
-                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>Completed</h2>
-                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>{tasksCounts.completed}</p>
+                    className={`p-2 sm:p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
+                    rounded-xl border-t-4 border-indigo-600 flex flex-col flex-1 items-center min-w-25`}>
+                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+                        Completed
+                    </h2>
+                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+                        {tasksCounts.completed}</p>
                 </div>
 
-                <div className={`p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg rounded-xl border-t-4 border-red-500 w-full`}>
-                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>In Progress</h2>
-                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>{tasksCounts.onProgress}</p>
+                <div className={`p-2 sm:p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
+                rounded-xl border-t-4 border-red-500 flex flex-col flex-1 items-center min-w-25`}>
+                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>In
+                        Progress</h2>
+                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+                        {tasksCounts.onProgress}</p>
                 </div>
 
-                <div className={`p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg rounded-xl border-t-4 border-black w-full`}>
+                <div className={`p-2 sm:p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
+                rounded-xl border-t-4 border-black flex flex-col flex-1 items-center min-w-25`}>
                     <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>Pending</h2>
-                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>{tasksCounts.pending}</p>
+                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+                        {tasksCounts.pending}</p>
                 </div>
             </div>
 
-            <div className={`${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm p-6 shadow-lg rounded-xl overflow-hidden w-full h-full`}>
-                <h2 className={`text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>Recent Tasks</h2>
+            <div className={`${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm p-6 shadow-lg 
+            rounded-xl lg:overflow-hidden w-full`}>
+                <h2 className={`text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
+                    Recent Tasks
+                </h2>
                 <div className="flex gap-4 flex-col overflow-y-auto max-h-[90%] w-full p-2">
                     {tasks?.map((task) => (
                         <div key={task.id}
-                             className={`p-4 ${darkMode ? "bg-black/80" : "bg-white/80"} backdrop-blur-sm rounded-lg flex justify-between items-center w-full`}>
+                             className={`p-4 ${darkMode ? "bg-black/80" : "bg-white/80"} backdrop-blur-sm rounded-lg 
+                             flex justify-between items-center w-full`}>
                             <div className="min-w-0">
-                                <h3 className={`text-lg font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`}>{task.title}</h3>
-                                <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} text-sm truncate`}>{task.description}</p>
+                                <h3 className={`text-lg font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
+                                    {task.title}
+                                </h3>
+                                <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} text-sm truncate`}>
+                                    {task.description}
+                                </p>
                             </div>
                             <span className={`px-3 py-1 text-sm font-medium text-white rounded-full 
                     ${task.taskStatus === "Completed" ? "bg-green-600"

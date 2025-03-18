@@ -18,16 +18,17 @@ export const metadata: Metadata = {
 const layout = ({children}: { children: ReactNode }) => {
     return (
         <html>
-        <body className="flex flex-col h-screen w-screen bg-[url('/banner.png')] bg-cover">
+        <body className="flex flex-col h-screen w-screen bg-cover">
         <AuthProvider>
             <ThemeProvider>
                 <TaskProvider>
-                    <div className="flex items-center px-6 w-full backdrop-blur-md shadow-lg h-[10%]">
+                    <div className="flex items-center px-3 sm:px-6 w-full backdrop-blur-md shadow-lg sm:min-h-[15%]
+                    lg:min-h-[10%] z-10">
                         <Header/>
                     </div>
-                    <div className="flex bg-cover p-3 h-[90%]">
+                    <div className="flex bg-cover p-3 h-[90%] flex-row">
                         <Sidebar/>
-                        <main className="px-8 w-full">
+                        <main className="sm:px-8 w-full">
                             {children}
                         </main>
                     </div>

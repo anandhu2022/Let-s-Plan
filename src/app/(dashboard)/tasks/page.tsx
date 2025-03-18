@@ -56,7 +56,15 @@ const ViewTasks = () => {
     });
     const {errors, isSubmitting} = formState;
 
-    const handleEdit = ({id = null, title, description, taskStatus, date, time}: TaskProps) => {
+    const handleEdit = (
+        {
+            id = null,
+            title,
+            description,
+            taskStatus,
+            date,
+            time
+        }: TaskProps) => {
         const formattedDate = date.split('-').reverse().join('-');
         setEditModal({
             status: true,
@@ -114,7 +122,7 @@ const ViewTasks = () => {
                         <th className="py-3 px-4 text-left">Description</th>
                         <th className="py-3 px-4 text-left">Date</th>
                         <th className="py-3 px-4 text-left normal-case">Time (Hrs)</th>
-                        <th className="py-3 px-4 text-left">Status</th>
+                        <th className="py-3 px-4 text-left min-w-30">Status</th>
                         <th className="py-3 px-4 text-center">Actions</th>
                     </tr>
                     </thead>
@@ -128,7 +136,7 @@ const ViewTasks = () => {
                                     <td className="py-3 px-4">{task.date}</td>
                                     <td className="py-3 px-4">{task.time}</td>
                                     <td className="py-3 px-4">
-                                    <span className={`px-3 py-1 text-xs font-medium rounded-full 
+                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-30
                                         ${task.taskStatus === "Completed" ? "bg-green-600 text-white"
                                         : task.taskStatus === "In Progress" ? "bg-gray-500 text-white"
                                             : "bg-red-500 text-white"}`}>
@@ -218,7 +226,9 @@ const ViewTasks = () => {
                                         required: "description is required",
                                     })}
                                 />
-                                {errors.description && (<p className={"text-red-500"}>{errors.description.message}</p>)}
+                                {errors.description && (<p className={"text-red-500"}>
+                                    {errors.description.message}
+                                </p>)}
                             </div>
 
                             <div className="mb-4">

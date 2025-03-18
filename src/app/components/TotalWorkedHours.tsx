@@ -19,14 +19,15 @@ const TotalWorkedHours = () => {
     }, [reloadViewTaskForm, user?.id]);
     if (!user?.id) return;
     return (
-        <div className={`${darkMode ? "bg-black/50" : "bg-white/50"} backdrop-blur-md shadow-lg rounded-xl p-3 
-        border-t-4 border-red-500 text-center flex flex-row items-center`}>
-            <h3 className={`${darkMode ? "text-white" : "text-black"} font-semibold text-gray-900`}>Total Hrs logged
-                today: &nbsp;</h3>
-            <p className={darkMode ? "text-white" : "text-black"}>{user?.id ? time != null ? time + " hour(s)"
-                : "loading" : "Please Login"}</p>
-        </div>
-    );
+        <>
+            <h3 className={`${darkMode ? "text-white" : "text-black"} text-xl font-semibold sm:text-sm text-gray-900`}>
+                Total Hrs logged today: &nbsp;</h3>
+            <p className={`${darkMode ? "text-white" : "text-black"} text-2xl sm:text-sm font-bold sm:font-normal`}>
+                {user?.id ? time != null ? time + " hour(s)" : "loading" : "Please Login"}
+            </p>
+        </>
+    )
+        ;
 };
 
 export default TotalWorkedHours;

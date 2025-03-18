@@ -25,7 +25,7 @@ const Clock = () => {
 
     return (
         <h1 className={`${darkMode ? "bg-black/40 text-white" : "bg-white/40 text-black"} backdrop-blur-sm shadow-lg 
-        rounded-xl p-3 border-t-4 border-indigo-600 text-3xl h-fit`}>
+        rounded-xl p-3 border-t-4 border-indigo-600 sm:text-3xl h-fit`}>
             {ctime || "Loading..."}
         </h1>
     );
