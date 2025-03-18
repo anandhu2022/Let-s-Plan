@@ -24,6 +24,7 @@ export interface AuthContextProps {
     logout: () => void;
     user: UserProps | null;
 }
+
 export interface TaskContextProps {
     reloadViewTaskForm: boolean
     reloadTaskForm: () => void;
@@ -44,3 +45,7 @@ export interface TaskProps {
     time: number;
 }
 
+export interface ThemeContextProps {
+    darkMode: boolean;
+    toggleTheme: () => void;
+}

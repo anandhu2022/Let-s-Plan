@@ -1,16 +1,17 @@
-import {Theme, ThemeProviderProps} from "../../libraries/utils/types.ts";
+"use client";
+
 import {useState} from "react";
-import {ThemeContext} from "./useTheme.tsx";
+import {ThemeContext} from "./useTheme";
+import {ContextProviderProps} from "@/app/libs/types";
 
 
-const ThemeProvider = ({children}: ThemeProviderProps) => {
-    const [theme, setTheme] = useState<Theme>("light");
-    const toggleMode = () => {
-        setTheme(theme === "light" ? "dark" : "light");
+const ThemeProvider = ({children}: ContextProviderProps) => {
+    const [darkMode, setDarkMode] = useState<boolean>(false);
+    const toggleTheme = () => {
+        setDarkMode(!darkMode);
     }
-    const isLightMode = theme === "light";
     return (
-        <ThemeContext.Provider value={{toggleMode, isLightMode}}>
+        <ThemeContext.Provider value={{toggleTheme, darkMode}}>
             {children}
         </ThemeContext.Provider>
     );
