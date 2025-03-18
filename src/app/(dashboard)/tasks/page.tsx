@@ -1,3 +1,5 @@
+"use client";
+
 import {FaEdit, FaTrash} from "react-icons/fa";
 import useAuth from "@/app/context/Auth/useAuth";
 import {useEffect, useState} from "react";
@@ -32,7 +34,8 @@ const ViewTasks = () => {
             fetch(`/api/task/get-tasks?userId=${user?.id}`)
                 .then(response => response.json())
                 .then(data => {
-                    setTasks(data.tasks);
+                    const sortedTasks = data.tasks.sort((a: { id: number; }, b: { id: number; }) => (b.id - a.id))
+                    setTasks(sortedTasks);
                 });
         }
     }, [reloadViewTaskForm, user?.id]);
@@ -102,10 +105,9 @@ const ViewTasks = () => {
     }
 
     return (
-        <div className={"flex justify-center items-center flex-col h-screen"}>
-
-            <div className="shadow-lg rounded-lg overflow-x-auto max-h-[60%] max-w-[60%] bg-white">
-                <table className="w-full border-collapse bg-white shadow-md rounded-lg">
+        <div className={"flex flex-col w-full h-full"}>
+            <div className="shadow-lg rounded-2xl overflow-x-auto">
+                <table className="w-full border-collapse shadow-md ">
                     <thead className="bg-gray-200 text-gray-700 uppercase text-sm">
                     <tr>
                         <th className="py-3 px-4 text-left">Task Name</th>
@@ -116,7 +118,7 @@ const ViewTasks = () => {
                         <th className="py-3 px-4 text-center">Actions</th>
                     </tr>
                     </thead>
-                    <tbody className="overflow-x-auto h-[60%]">
+                    <tbody>
                     {user ?
                         (
                             (tasks.length > 0 ? (tasks?.map((task: TaskProps) => (
@@ -166,14 +168,11 @@ const ViewTasks = () => {
                 </table>
             </div>
             {editModal?.status && (
-                <div className={"fixed top-0 left-0 h-screen w-screen backdrop-blur z-50 flex " +
-                    "justify-center items-center"}>
-                    <div
-                        className={"min-h-1/2 min-w-1/4 bg-black/40 b flex p-4 rounded-2xl flex-col ring-2 ring-gray-600 text-white"}>
-                        <div className={"flex justify-between"}>
-
+                <div
+                    className="absolute bg-white/95 backdrop-blur flex justify-center items-center h-full w-full rounded-2xl">
+                    <div className="flex p-8 flex-col text-black w-full gap-5">
+                        <div className={"flex justify-between p-4"}>
                             <h2 className={"text-xl"}>Edit task</h2>
-
                             <Close
                                 className={"cursor-pointer"}
                                 onClick={() => {
@@ -190,16 +189,16 @@ const ViewTasks = () => {
                                 }}
                             />
                         </div>
-                        <form className={"flex flex-col space-y-4 gap-2 p-3"}
+                        <form className={"flex flex-col space-y-4 gap-2 p-4"}
                               onSubmit={handleSubmit(onSubmit)}
                         >
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-white/80">Task Name</label>
+                                <label className="block text-sm font-medium text-black/80">Task Name</label>
                                 <input
                                     id="title"
                                     type="text"
-                                    className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                    className="w-full p-2 mt-1 bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                     placeholder="Enter task name"
                                     {...register("title", {
                                         required: "Task name is required",
@@ -213,8 +212,8 @@ const ViewTasks = () => {
                                 </label>
                                 <textarea
                                     id="description"
-                                    className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                    className="w-full p-2 mt-1 bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                     {...register("description", {
                                         required: "description is required",
                                     })}
@@ -223,16 +222,16 @@ const ViewTasks = () => {
                             </div>
 
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-white/80">Status</label>
+                                <label className="block text-sm font-medium text-black/80">Status</label>
                                 <select
                                     id="taskStatus"
-                                    className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                    className="w-full p-2 mt-1 bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                     {...register("taskStatus")}
                                 >
-                                    <option className="bg-black text-white" value="Pending">Pending</option>
-                                    <option className="bg-black text-white" value="In Progress">In Progress</option>
-                                    <option className="bg-black text-white" value="Completed">Completed</option>
+                                    <option className="bg-white text-black" value="Pending">Pending</option>
+                                    <option className="bg-white text-black" value="In Progress">In Progress</option>
+                                    <option className="bg-white text-black" value="Completed">Completed</option>
                                 </select>
                                 <div className="text-red-500 mt-2">{errors.taskStatus?.message}</div>
                             </div>
@@ -246,8 +245,8 @@ const ViewTasks = () => {
                                         <input
                                             id="date"
                                             type="date"
-                                            className="p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                            className="p-2 mt-1 bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                             {...register("date", {
                                                 required: "date is required",
                                             })}
@@ -260,8 +259,8 @@ const ViewTasks = () => {
                                             type="number"
                                             step="0.05"
                                             placeholder="Time in hours"
-                                            className="p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                            className="p-2 mt-1 bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                             {...register("time", {
                                                 required: "Time is required",
                                             })}
@@ -270,13 +269,33 @@ const ViewTasks = () => {
                                     </div>
                                 </div>
                             </div>
-                            <button
-                                type="submit"
-                                className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
+                            <div className="flex gap-4">
+                                <button
+                                    type="submit"
+                                    className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
                                 transition"
-                            >
-                                {isSubmitting ? "Updating Task..." : "Update Task"}
-                            </button>
+                                    onClick={() => {
+                                        reset();
+                                        setEditModal({
+                                            id: null,
+                                            status: false,
+                                            title: '',
+                                            description: '',
+                                            taskStatus: '',
+                                            date: '',
+                                            time: 0
+                                        })
+                                    }}>
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
+                                transition"
+                                >
+                                    {isSubmitting ? "Updating Task..." : "Update Task"}
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>

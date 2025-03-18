@@ -1,3 +1,5 @@
+"use client";
+
 import dayjs from "dayjs";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -72,57 +74,55 @@ const AddTask = () => {
 
     }
     return (
-        <div className="flex items-center justify-center w-1/3">
-            <div
-                className="backdrop-blur-md bg-black/50 border border-white/30 shadow-2xl rounded-xl p-8
-                        w-[90%] max-w-md text-white">
-                <h2 className="text-2xl font-semibold mb-4 text-white/90">Add New Task</h2>
+        <div className="flex items-center justify-center items-stretch min-w-full h-full ">
+            <div className="p-8 text-black w-full">
+                <h2 className="text-2xl font-semibold text-black/90 text-center w-full">Add New Task</h2>
                 {user ?
-                    (<form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-white/80">Task Name</label>
+                    (<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+                        <div className="">
+                            <label className="block text-sm font-medium text-black/80">Task Name</label>
                             <input
                                 id="title"
                                 type="text"
-                                className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                className="w-full p-2 bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                 placeholder="Enter task name"
                                 {...register("title", {
                                     required: "Task name is required",
                                 })}
                             />
-                            <div className="text-red-500 mt-2">{errors.title?.message}</div>
+                            <div className="text-red-500">{errors.title?.message}</div>
                         </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-white/80">Description</label>
+                        <div>
+                            <label className="block text-sm font-medium text-black/80">Description</label>
                             <textarea
                                 id="description"
-                                className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                className="w-full p-2  bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                 placeholder="Enter task details"
                                 {...register("description", {
                                     required: "Description is required",
                                 })}
                                 maxLength={255}
                             />
-                            <div className="text-red-500 mt-2">{errors.description?.message}</div>
+                            <div className="text-red-500">{errors.description?.message}</div>
                         </div>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-white/80">Status</label>
+                        <div className="">
+                            <label className="block text-sm font-medium text-black/80">Status</label>
                             <select
                                 id="taskStatus"
-                                className="w-full p-2 mt-1 bg-transparent border border-white/40 rounded-lg
-                                    text-white placeholder-white/50 focus:outline-none focus:border-white"
+                                className="w-full p-2  bg-transparent border border-black/40 rounded-lg
+                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
                                 {...register("taskStatus")}
                             >
-                                <option className="bg-black text-white" value="Pending">Pending</option>
-                                <option className="bg-black text-white" value="In Progress">In Progress</option>
-                                <option className="bg-black text-white" value="Completed">Completed</option>
+                                <option className="bg-white/30 text-black" value="Pending">Pending</option>
+                                <option className="bg-white/30 text-black" value="In Progress">In Progress</option>
+                                <option className="bg-white/30 text-black" value="Completed">Completed</option>
                             </select>
-                            <div className="text-red-500 mt-2">{errors.taskStatus?.message}</div>
+                            <div className="text-red-500">{errors.taskStatus?.message}</div>
                         </div>
-                        <div className="mb-4 flex flex-col">
-                            <label className="block text-sm font-medium text-white/80">Date and Time</label>
+                        <div className=" flex flex-col">
+                            <label className="block text-sm font-medium text-black/80">Date and Time</label>
                             <div className={"flex flex-row gap-3 w-full"}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DesktopDatePicker
@@ -134,21 +134,21 @@ const AddTask = () => {
                                             width: "60%",
                                             "& .MuiOutlinedInput-root": {
                                                 borderRadius: "8px",
-                                                color: "white",
+                                                color: "black",
                                                 backgroundColor: "transparent",
-                                                border: "1px solid rgba(255, 255, 255, 0.4)",
+                                                border: "1px rgba(255, 255, 255, 0.4)",
                                                 "&:hover": {
-                                                    borderColor: "white",
+                                                    borderColor: "black",
                                                 },
                                                 "&.Mui-focused": {
-                                                    borderColor: "white",
+                                                    borderColor: "black",
                                                 },
                                             },
                                             "& .MuiInputBase-input": {
-                                                color: "white",
+                                                color: "black",
                                             },
                                             "& .MuiSvgIcon-root": {
-                                                color: "white",
+                                                color: "black",
                                             },
                                         }}
                                         slotProps={{
@@ -157,22 +157,27 @@ const AddTask = () => {
                                     />
                                 </LocalizationProvider>
 
-                                <input
-                                    id="time"
-                                    type="number"
-                                    step="0.05"
-                                    className="w-[40%] p-2 mt-1 border border-white/40 rounded-lg
-                                    text-white focus:outline-none focus:border-white"
-                                    placeholder="Time in Hrs"
-                                    {...register("time")}
-                                />
+                                <div className={"w-[40%]"}>
+                                    <input
+                                        id="time"
+                                        type="number"
+                                        step="0.05"
+                                        className=" p-2  border border-black/40 rounded-lg h-full text-black
+                                        focus:outline-none focus:border-black w-full"
+                                        placeholder="Time in Hrs"
+                                        {...register("time", {
+                                            required: "Time is required",
+                                        })}
+                                    />
+                                    <div className="text-red-500">{errors.time?.message}</div>
+                                </div>
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
-                                transition"
+                            className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium transition
+                            hover:text-white transition duration-500 ease-out"
                         >
                             {isSubmitting ? "Creating Task..." : "Add Task"}
                         </button>
@@ -183,22 +188,22 @@ const AddTask = () => {
                     )}
                 {
                     modal?.enabled && (
-                        <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center
-                        rounded-xl">
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center rounded-xl
+                        bg-black/30 backdrop-blur-md">
                             <div className="w-[70%] max-w-md p-4 bg-white rounded-xl shadow-2xl flex gap-4 flex-col">
-                                <div className={`border-2 border-red-600 p-4 rounded-xl`}>
+                                <div className={`border-2 border-blue-600 p-4 rounded-xl flex flex-col gap-8`}>
                                     <div className={"text-center"}>
-                                        {modal.success ? <CheckIcon fontSize={"large"} className="text-green-600"/> :
+                                        {modal.success ? <CheckIcon fontSize={"large"} className="text-blue-600"/> :
                                             <NewReleasesIcon fontSize={"large"} className="text-red-600"/>}
                                     </div>
-                                    <h2 className={`text-center text-2xl font-semibold mb-4 
-                                ${modal.success ? "text-green-600" : "text-red-600"}`}>
+                                    <h2 className={`text-center text-2xl font-semibold  
+                                ${modal.success ? "text-blue-600" : "text-red-600"}`}>
                                         {modal.message}
                                     </h2>
                                     <button
                                         onClick={() => setModal({enabled: false})}
-                                        className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
-                                            transition"
+                                        className="w-full px-4 py-2 bg-blue-300 hover:bg-blue-600 hover:text-white rounded-lg font-medium
+                                            transition duration-500 ease-out"
                                     >
                                         Close
                                     </button>

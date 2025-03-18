@@ -5,6 +5,7 @@ import Image from "next/image";
 import PersonIcon from "@mui/icons-material/Person";
 import {useRouter} from "next/navigation";
 import useAuth from "@/app/context/Auth/useAuth";
+import TotalWorkedHours from "@/app/components/TotalWorkedHours";
 
 const Header = () => {
     const {user, logout} = useAuth();
@@ -15,7 +16,7 @@ const Header = () => {
             <Link href="/" className="cursor-pointer">
                 <Image src="/LetsPlanLogo.svg" alt="logo" width={200} height={50}/>
             </Link>
-
+            <TotalWorkedHours/>
             <button
                 onClick={() => {
                     if (user) logout();

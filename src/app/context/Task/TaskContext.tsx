@@ -1,3 +1,5 @@
+"use client";
+
 import React, {useState} from 'react';
 import {ContextProviderProps} from "@/app/libs/types";
 import {TaskContext} from "@/app/context/Task/useTask";
