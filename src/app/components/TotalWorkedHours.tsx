@@ -17,7 +17,6 @@ const TotalWorkedHours = () => {
                 })
         }
     }, [reloadViewTaskForm, user?.id]);
-    if (!user?.id) return;
     return (
         <>
             <h3 className={`${darkMode ? "text-white" : "text-black"} text-xl font-semibold sm:text-sm text-gray-900`}>

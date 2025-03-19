@@ -10,9 +10,12 @@ interface TaskProps {
 
 import useAuth from "@/app/context/Auth/useAuth";
 import {useEffect, useState} from "react";
+import useTheme from "@/app/context/Theme/useTheme";
 
 const Summary = () => {
+    const {darkMode} = useTheme();
     const {user} = useAuth();
+    const [previousDayLogTime, setPreviousDayLogTime] = useState<number>(0);
     const [taskSummary, setTaskSummary] = useState<{
         taskToday: TaskProps[],
         taskYesterday: TaskProps[]
@@ -27,11 +30,18 @@ const Summary = () => {
                 })
         }
     }, [user?.id]);
-    console.log(taskSummary);
+
+    useEffect(() => {
+        const totalTime = taskSummary.taskYesterday.reduce((total, task) => total + Number(task.time || 0), 0);
+        setPreviousDayLogTime(totalTime);
+    }, [taskSummary.taskYesterday]);
+
     return (
         <div className="flex flex-col w-full h-full p-3 gap-3">
             <div className="w-full h-[50%] bg-white/60 rounded-2xl p-5 flex flex-col gap-4">
-                <h2 className="text-xl">Today</h2>
+                <h2 className="text-xl">
+                    Today
+                </h2>
                 <div className="w-full rounded-2xl shadow-md overflow-y-auto">
                     <table className="w-full border-collapse">
                         <thead className="bg-gray-200 text-gray-700 uppercase text-sm">
@@ -79,7 +89,17 @@ const Summary = () => {
                 </div>
             </div>
             <div className="w-full h-[50%] bg-white/60 rounded-2xl p-5 flex flex-col gap-4">
-                <h2 className="text-xl">Yesterday</h2>
+                <h2 className="text-xl flex flex-row justify-between items-center w-full">
+                    <span>Yesterday</span>
+                    <div className={`p-2 sm:p-1 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
+                rounded-xl border-t-4 border-red-500 flex flex-row items-center w-fit`}>
+                        <h3 className={`${darkMode ? "text-white" : "text-black"} text-xl font-semibold sm:text-sm text-gray-900`}>
+                            Total Hrs logged yesterday: &nbsp;</h3>
+                        <p className={`${darkMode ? "text-white" : "text-black"} text-2xl sm:text-sm font-bold sm:font-normal`}>
+                            {user?.id ? previousDayLogTime != null ? previousDayLogTime + " hour(s)" : "loading" : "Please Login"}
+                        </p>
+                    </div>
+                </h2>
                 <div className="w-full rounded-2xl shadow-md overflow-y-auto">
                     <table className="w-full border-collapse">
                         <thead className="bg-gray-200 text-gray-700 uppercase text-sm">

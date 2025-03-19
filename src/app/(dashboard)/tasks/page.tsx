@@ -82,7 +82,7 @@ const ViewTasks = () => {
     const onSubmit = async (
         {id, title, description, taskStatus, date, time}: TaskProps) => {
         const formattedDate = date.split('-').reverse().join('-');
-        const result = await fetch("http://localhost:3000/api/task/edit-task", {
+        const result = await fetch("/api/task/edit-task", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
