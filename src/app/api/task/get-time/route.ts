@@ -12,6 +12,7 @@ export const GET = async (req: NextRequest) => {
 
     const timeEntries = await prisma.task.findMany({
         where: {
+            taskStatus: "Completed",
             date: today,
             userId: userId,
         },

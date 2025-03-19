@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 export const PUT = async (request: NextRequest) => {
     try {
         const {id, title, description, taskStatus, time, date} = await request.json();
-        if (!id || !title || !description || !taskStatus || !time || !date) {
+        if (!id || !title || !description || !taskStatus || time === null || !date) {
             return new NextResponse(JSON.stringify({error: 'Missing required fields'}), {
-                status: 400,
+                status: 401,
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -7,8 +7,10 @@ import {TaskProps} from "@/app/libs/types";
 import useTask from "@/app/context/Task/useTask";
 import {Close} from "@mui/icons-material";
 import {useForm} from "react-hook-form";
+import useTheme from "@/app/context/Theme/useTheme";
 
 const ViewTasks = () => {
+    const {darkMode} = useTheme();
     const {reloadViewTaskForm, reloadTaskForm} = useTask();
     const {user} = useAuth();
     const [tasks, setTasks] = useState<TaskProps[]>([]);
@@ -97,6 +99,7 @@ const ViewTasks = () => {
             }),
         });
         if (!result.ok) {
+            console.log(result);
             throw new Error('Failed to save task');
         }
         reloadTaskForm();
@@ -116,30 +119,35 @@ const ViewTasks = () => {
         <div className={"flex flex-col w-full h-full"}>
             <div className="shadow-lg rounded-2xl overflow-x-auto">
                 <table className="w-full border-collapse shadow-md ">
-                    <thead className="bg-gray-200 text-gray-700 uppercase text-sm">
+                    <thead className={`${darkMode ? "text-gray-100 bg-black/40" : "text-gray-700 bg-white/40"} 
+                    backdrop-blur-sm uppercase text-sm`}>
                     <tr>
                         <th className="py-3 px-4 text-left">Task Name</th>
                         <th className="py-3 px-4 text-left">Description</th>
                         <th className="py-3 px-4 text-left">Date</th>
                         <th className="py-3 px-4 text-left normal-case">Time (Hrs)</th>
-                        <th className="py-3 px-4 text-left min-w-30">Status</th>
+                        <th className="py-3 px-4 text-left w-30">Status</th>
                         <th className="py-3 px-4 text-center">Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody className={`${darkMode ? "text-gray-100 bg-black/80" : "text-gray-700 bg-white/40"} 
+                    backdrop-blur-sm`}>
                     {user ?
                         (
                             (tasks.length > 0 ? (tasks?.map((task: TaskProps) => (
-                                <tr key={task.id} className="border-t hover:bg-gray-100">
+                                <tr key={task.id} className={`border-t transition duration-500 ease-out
+                                ${darkMode? "hover:bg-black": "hover:bg-white"}`}>
                                     <td className="py-3 px-4">{task.title}</td>
                                     <td className="py-3 px-4">{task.description}</td>
                                     <td className="py-3 px-4">{task.date}</td>
                                     <td className="py-3 px-4">{task.time}</td>
                                     <td className="py-3 px-4">
-                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-30
+                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-[100%] 
+                                    inline-block text-center
                                         ${task.taskStatus === "Completed" ? "bg-green-600 text-white"
                                         : task.taskStatus === "In Progress" ? "bg-gray-500 text-white"
-                                            : "bg-red-500 text-white"}`}>
+                                            : task.taskStatus === "Blocked" ? "bg-black text-white" : "bg-red-500 " +
+                                                "text-white"}`}>
                                         {task.taskStatus}
                                     </span>
                                     </td>
@@ -242,6 +250,7 @@ const ViewTasks = () => {
                                     <option className="bg-white text-black" value="Pending">Pending</option>
                                     <option className="bg-white text-black" value="In Progress">In Progress</option>
                                     <option className="bg-white text-black" value="Completed">Completed</option>
+                                    <option className="bg-white text-black" value="Blocked">Blocked</option>
                                 </select>
                                 <div className="text-red-500 mt-2">{errors.taskStatus?.message}</div>
                             </div>

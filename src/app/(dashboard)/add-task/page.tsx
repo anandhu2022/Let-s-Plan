@@ -10,9 +10,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import useTheme from "@/app/context/Theme/useTheme";
 
 const AddTask = () => {
     const {reloadTaskForm} = useTask();
+    const {darkMode} = useTheme();
     const {user} = useAuth();
     const [modal, setModal] = useState<{ enabled: boolean, success?: boolean, message?: string; } | null>(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -74,18 +76,24 @@ const AddTask = () => {
 
     }
     return (
-        <div className="flex items-center justify-center items-stretch min-w-full h-full ">
+        <div
+            className={`flex items-center justify-center items-stretch min-w-full h-full rounded-2xl ${darkMode
+                ? "bg-black/40 placeholder-white" : "bg-white/40"} backdrop-blur-sm placeholder-black`}>
             <div className="p-8 text-black w-full">
-                <h2 className="text-2xl font-semibold text-black/90 text-center w-full">Add New Task</h2>
+                <h2 className={`text-2xl font-semibold text-center w-full ${darkMode ? "text-white" : "text-black"}`}>
+                    Add New Task
+                </h2>
                 {user ?
-                    (<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+                    (<form onSubmit={handleSubmit(onSubmit)} className={`flex flex-col gap-6 w-full ${darkMode ?
+                        "text-white" : "text-black"}`}>
                         <div className="">
-                            <label className="block text-sm font-medium text-black/80">Task Name</label>
+                            <label className="block text-sm font-medium">Task Name</label>
                             <input
                                 id="title"
                                 type="text"
-                                className="w-full p-2 bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
+                                className={`w-full p-2 bg-transparent border ${darkMode ? "border-white/40 " +
+                                    "focus:border-white" : "border-black/40 focus:border-black"} rounded-lg 
+                                    focus:outline-none`}
                                 placeholder="Enter task name"
                                 {...register("title", {
                                     required: "Task name is required",
@@ -94,11 +102,12 @@ const AddTask = () => {
                             <div className="text-red-500">{errors.title?.message}</div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-black/80">Description</label>
+                            <label className="block text-sm font-medium">Description</label>
                             <textarea
                                 id="description"
-                                className="w-full p-2  bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
+                                className={`w-full p-2  bg-transparent border ${darkMode ? "border-white/40 " +
+                                    "focus:border-white" : "border-black/40 focus:border-black"} rounded-lg 
+                                    focus:outline-none`}
                                 placeholder="Enter task details"
                                 {...register("description", {
                                     required: "Description is required",
@@ -108,21 +117,23 @@ const AddTask = () => {
                             <div className="text-red-500">{errors.description?.message}</div>
                         </div>
                         <div className="">
-                            <label className="block text-sm font-medium text-black/80">Status</label>
+                            <label className="block text-sm font-medium">Status</label>
                             <select
                                 id="taskStatus"
-                                className="w-full p-2  bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
+                                className={`w-full p-2  bg-transparent border ${darkMode ? "border-white/40 " +
+                                    "focus:border-white" : "border-black/40 focus:border-black"} rounded-lg 
+                                    focus:outline-none`}
                                 {...register("taskStatus")}
                             >
                                 <option className="bg-white/30 text-black" value="Pending">Pending</option>
                                 <option className="bg-white/30 text-black" value="In Progress">In Progress</option>
                                 <option className="bg-white/30 text-black" value="Completed">Completed</option>
+                                <option className="bg-white/30 text-black" value="Blocked">Blocked</option>
                             </select>
                             <div className="text-red-500">{errors.taskStatus?.message}</div>
                         </div>
                         <div className=" flex flex-col">
-                            <label className="block text-sm font-medium text-black/80">Date and Time</label>
+                            <label className="block text-sm font-medium">Date and Time</label>
                             <div className={"flex flex-row gap-3 w-full"}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DesktopDatePicker
@@ -144,12 +155,6 @@ const AddTask = () => {
                                                     borderColor: "black",
                                                 },
                                             },
-                                            "& .MuiInputBase-input": {
-                                                color: "black",
-                                            },
-                                            "& .MuiSvgIcon-root": {
-                                                color: "black",
-                                            },
                                         }}
                                         slotProps={{
                                             field: {clearable: true},
@@ -162,8 +167,9 @@ const AddTask = () => {
                                         id="time"
                                         type="number"
                                         step="0.05"
-                                        className=" p-2  border border-black/40 rounded-lg h-full text-black
-                                        focus:outline-none focus:border-black w-full"
+                                        className={` p-2  border ${darkMode ? "border-white/40 focus:border-white" :
+                                            "border-black/40 focus:border-black"} rounded-lg h-full 
+                                            focus:outline-none w-full`}
                                         placeholder="Time in Hrs"
                                         {...register("time", {
                                             required: "Time is required",

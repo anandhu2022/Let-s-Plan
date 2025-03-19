@@ -62,10 +62,10 @@ const Summary = () => {
                                             <td className="py-3 px-4">{task.description}</td>
                                             <td className="py-3 px-4">{task.time}</td>
                                             <td className="py-3 px-4">
-                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-30 
+                                    <span className={`px-3 py-1 text-xs font-medium rounded-full min-w-30
                                         ${task.taskStatus === "Completed" ? "bg-green-600 text-white"
                                         : task.taskStatus === "In Progress" ? "bg-gray-500 text-white"
-                                            : "bg-red-500 text-white"}`}>
+                                            : task.taskStatus === "Blocked" ? "bg-black text-white" : "bg-red-500 text-white"}`}>
                                         {task.taskStatus}
                                     </span>
                                             </td>
@@ -93,10 +93,14 @@ const Summary = () => {
                     <span>Yesterday</span>
                     <div className={`p-2 sm:p-1 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
                 rounded-xl border-t-4 border-red-500 flex flex-row items-center w-fit`}>
-                        <h3 className={`${darkMode ? "text-white" : "text-black"} text-xl font-semibold sm:text-sm text-gray-900`}>
-                            Total Hrs logged yesterday: &nbsp;</h3>
-                        <p className={`${darkMode ? "text-white" : "text-black"} text-2xl sm:text-sm font-bold sm:font-normal`}>
-                            {user?.id ? previousDayLogTime != null ? previousDayLogTime + " hour(s)" : "loading" : "Please Login"}
+                        <h3 className={`${darkMode ? "text-white" : "text-black"} sm:font-semibold sm:text-sm 
+                        text-gray-900`}>
+                            <div className="hidden sm:block">Total Hrs logged yesterday:&nbsp;</div>
+                            </h3>
+                        <p className={`${darkMode ? "text-white" : "text-black"} text-sm sm:text-sm sm:font-bold 
+                        sm:font-normal`}>
+                            {user?.id ? previousDayLogTime != null ? previousDayLogTime + " hour(s)" :
+                                "loading" : "Please Login"}
                         </p>
                     </div>
                 </h2>

@@ -1,10 +1,10 @@
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {TaskProps} from "@/app/libs/types";
 import {PrismaClient} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const POST = async (req: Request) => {
+export const POST = async (req: NextRequest) => {
     try {
         const {title, description, taskStatus, userId, date, time}: TaskProps = await req.json();
         if (!title || !description || !userId || !date || !time) {
