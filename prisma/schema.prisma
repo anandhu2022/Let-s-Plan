@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,16 +12,45 @@ model User {
   username String?
   email    String  @unique
   password String
+  roleId   Int?
+  role     Roles?
   task     Task[]
 }
 
 model Task {
   id          Int     @id @default(autoincrement())
   title       String
-  description String
-  taskStatus  String
+  description String  @db.VarChar(255)
   date        String
-  time        Decimal
+  time        Decimal @db.Decimal(65, 3)
   userId      Int
+  taskStatus  String
   user        User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+
+  @@index([userId], map: "Task_userId_fkey")
+}
+
+model Roles {
+  id          Int               @id @default(autoincrement())
+  roleName    String
+  userId      Int?              @unique
+  user        User?             @relation(fields: [userId], references: [id])
+  permissions RolePermissions[]
+}
+
+model Permissions {
+  id             Int               @id @default(autoincrement())
+  permissionName String
+  status         Boolean
+  roles          RolePermissions[]
+}
+
+model RolePermissions {
+  id           Int         @id @default(autoincrement())
+  roleId       Int
+  role         Roles       @relation(fields: [roleId], references: [id])
+  permissionId Int
+  permission   Permissions @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId])
 }
