@@ -2,12 +2,15 @@
 
 import {useForm} from "react-hook-form";
 import {UserInput} from "@/app/libs/types";
-import Link from "next/link";
 import useAuth from "@/app/context/Auth/useAuth";
 import {useState} from "react";
+import useTheme from "@/app/context/Theme/useTheme";
+import EyeIcon from "next/dist/client/components/react-dev-overlay/ui/icons/eye-icon";
 
 const Login = () => {
     const {login} = useAuth();
+    const {darkMode} = useTheme();
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loginStatus, setLoginStatus] = useState<{ success: boolean, message: string } | null>(null);
     const {register, handleSubmit, formState} = useForm<UserInput>({
         defaultValues: {
@@ -22,15 +25,17 @@ const Login = () => {
         setLoginStatus(response);
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 items-center">
-
+        <form onSubmit={handleSubmit(onSubmit)} className={`flex flex-col gap-5 items-center
+        ${darkMode ? "text-white" : "text-black"}`}>
             <div className="text-2xl text-w">Sign in</div>
 
             <div className="w-full">
                 <input
                     id="email"
                     type="text"
-                    className="p-2 w-full rounded-xl bg-white outline-none focus:ring-2 focus:ring-indigo-400 transition duration-500 ease-out"
+                    className={`w-full p-3 bg-transparent border ${darkMode ? "border-white/40 " +
+                        "focus:border-white placeholder-white/40" : "border-black/40 focus:border-black " +
+                        "placeholder-black/40"} rounded-sm focus:outline-none`}
                     placeholder="Username"
                     autoComplete="email"
                     {...register('email', {
@@ -43,32 +48,34 @@ const Login = () => {
             </div>
 
             <div className="w-full">
-                <input
-                    id="password"
-                    type="password"
-                    className="p-2 w-full rounded-xl bg-white outline-none focus:ring-2
-                     focus:ring-indigo-400 transition duration-500 ease-out"
-                    placeholder="Password"
-                    autoComplete="current-password"
-                    {...register('password', {
-                        required: "Password is required",
-                    })}
-                />
-
+                <div className="relative">
+                    <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        className={`w-full p-3 pr-9 bg-transparent border ${darkMode ? "border-white/40 " +
+                            "focus:border-white placeholder-white/40" : "border-black/40 focus:border-black " +
+                            "placeholder-black/40"} rounded-sm focus:outline-none`}
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        {...register('password', {
+                            required: "Password is required",
+                        })}
+                    />
+                    <span
+                        className={`absolute right-1 top-1/2 transform -translate-y-1/2 cursor-pointer ${darkMode ?
+                            "hover:bg-white/30" : "hover:bg-black/30"} p-2 rounded-xl transition duration-500 ease-out`}
+                        onClick={() => setShowPassword(!showPassword)}>
+                        <EyeIcon/>
+                    </span>
+                </div>
                 {errors.password?.message &&
                     <div className="text-red-500">{errors.password.message}</div>}
             </div>
 
-            <button className="p-2 w-full rounded-xl bg-white hover:bg-indigo-100
-            transform duration-500 ease-out
-            cursor-pointer">
+            <button className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium transition
+                            hover:text-white transition duration-500 ease-out">
                 {isSubmitting ? "Signing in..." : "Sign in"}
             </button>
-            <div>
-                Don&#39;t have an account, <Link href={'/signup'} className="text-purple-950
-                hover:underline">
-                Sign Up</Link>
-            </div>
             {!loginStatus?.success && (
                 <div className="text-red-600">{loginStatus?.message}</div>
             )}

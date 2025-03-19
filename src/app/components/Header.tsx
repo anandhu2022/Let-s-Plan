@@ -40,7 +40,8 @@ const Header = () => {
             </div>
             <div className="flex items-center gap-4">
                 <div
-                    onClick={toggleTheme}>
+                    onClick={toggleTheme}
+                className="cursor-pointer">
                     {darkMode ? <DarkModeIcon className="text-blue-500"/> :
                         <LightMode className="text-yellow-500"/>}
                 </div>
