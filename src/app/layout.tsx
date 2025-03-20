@@ -20,13 +20,7 @@ const layout = ({children}: { children: ReactNode }) => {
         <AuthProvider>
             <ThemeProvider>
                 <TaskProvider>
-                    <div className="h-screen">
-                        <div className="flex items-center px-3 sm:px-6 w-full backdrop-blur-md shadow-lg sm:min-h-[15%]
-                    lg:min-h-[10%] z-10">
-                            <Header/>
-                        </div>
                         {children}
-                    </div>
                 </TaskProvider>
             </ThemeProvider>
         </AuthProvider>

@@ -84,7 +84,7 @@ const Header = () => {
                             className={`block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
                           hover:text-white transition ${darkMode ? "text-white" : "text-black"}`}
                             onClick={() => {
-                                router.push('/tasks');
+                                router.push('/user/tasks');
                                 setModal(false)
                             }}
                         >
@@ -94,7 +94,7 @@ const Header = () => {
                             className={`block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
                           hover:text-white transition ${darkMode ? "text-white" : "text-black"}`}
                             onClick={() => {
-                                router.push('/add-task');
+                                router.push('/user/add-task');
                                 setModal(false)
                             }}
                         >
@@ -104,7 +104,7 @@ const Header = () => {
                             className={`block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
                           hover:text-white transition ${darkMode ? "text-white" : "text-black"}`}
                             onClick={() => {
-                                router.push('/summary');
+                                router.push('/user/summary');
                                 setModal(false)
                             }}
                         >

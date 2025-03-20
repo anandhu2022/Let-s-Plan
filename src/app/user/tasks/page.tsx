@@ -184,141 +184,100 @@ const ViewTasks = () => {
                 </table>
             </div>
             {editModal?.status && (
-                <div
-                    className="absolute bg-white/95 backdrop-blur flex justify-center h-full w-full rounded-2xl">
-                    <div className="flex p-8 flex-col text-black w-full gap-5">
-                        <div className={"flex justify-between p-4"}>
-                            <h2 className={"text-xl"}>Edit task</h2>
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className={`w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 relative`}>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-semibold dark:text-gray-100">Edit Task</h2>
                             <Close
-                                className={"cursor-pointer"}
+                                className="cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-800"
                                 onClick={() => {
                                     reset();
                                     setEditModal({
-                                        id: null,
-                                        status: false,
-                                        title: '',
-                                        description: '',
-                                        taskStatus: '',
-                                        date: '',
-                                        time: 0
-                                    })
+                                        id: null, status: false, title: '', description: '', taskStatus: '', date: '', time: 0
+                                    });
                                 }}
                             />
                         </div>
-                        <form className={"flex flex-col space-y-4 gap-2 p-4"}
-                              onSubmit={handleSubmit(onSubmit)}
-                        >
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-black/80">Task Name</label>
+
+                        <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Task Name</label>
                                 <input
-                                    id="title"
                                     type="text"
-                                    className="w-full p-2 mt-1 bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
-                                    placeholder="Enter task name"
-                                    {...register("title", {
-                                        required: "Task name is required",
-                                    })}
+                                    className="w-full p-2 mt-1 border rounded-lg dark:bg-gray-800 dark:text-white"
+                                    {...register("title", { required: "Task name is required" })}
                                 />
-                                <div className="text-red-500 mt-2">{errors.title?.message}</div>
-                            </div>
-                            <div className={"flex gap-2 flex-col"}>
-                                <label className={"font-medium"} htmlFor="title">
-                                    Description
-                                </label>
-                                <textarea
-                                    id="description"
-                                    className="w-full p-2 mt-1 bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
-                                    {...register("description", {
-                                        required: "description is required",
-                                    })}
-                                />
-                                {errors.description && (<p className={"text-red-500"}>
-                                    {errors.description.message}
-                                </p>)}
+                                {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
                             </div>
 
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-black/80">Status</label>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                <textarea
+                                    className="w-full p-2 mt-1 border rounded-lg dark:bg-gray-800 dark:text-white"
+                                    {...register("description", { required: "Description is required" })}
+                                />
+                                {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
                                 <select
-                                    id="taskStatus"
-                                    className="w-full p-2 mt-1 bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
+                                    className="w-full p-2 mt-1 border rounded-lg dark:bg-gray-800 dark:text-white"
                                     {...register("taskStatus")}
                                 >
-                                    <option className="bg-white text-black" value="Pending">Pending</option>
-                                    <option className="bg-white text-black" value="In Progress">In Progress</option>
-                                    <option className="bg-white text-black" value="Completed">Completed</option>
-                                    <option className="bg-white text-black" value="Blocked">Blocked</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Blocked">Blocked</option>
                                 </select>
-                                <div className="text-red-500 mt-2">{errors.taskStatus?.message}</div>
                             </div>
 
-                            <div className={"flex gap-2 flex-col"}>
-                                <label className={"font-medium"} htmlFor="title">
-                                    Date and Time
-                                </label>
-                                <div className={"flex flex-row gap-1 w-full"}>
-                                    <div className={"flex flex-col w-[70%]"}>
-                                        <input
-                                            id="date"
-                                            type="date"
-                                            className="p-2 mt-1 bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
-                                            {...register("date", {
-                                                required: "date is required",
-                                            })}
-                                        />
-                                        {errors.date && (<p className={"text-red-500"}>{errors.date.message}</p>)}
-                                    </div>
-                                    <div className={"flex flex-col w-[30%]"}>
-                                        <input
-                                            id="time"
-                                            type="number"
-                                            step="0.05"
-                                            placeholder="Time in hours"
-                                            className="p-2 mt-1 bg-transparent border border-black/40 rounded-lg
-                                    text-black placeholder-black/50 focus:outline-none focus:border-black"
-                                            {...register("time", {
-                                                required: "Time is required",
-                                            })}
-                                        />
-                                        {errors.time && (<p className={"text-red-500"}>{errors.time.message}</p>)}
-                                    </div>
+                            <div className="flex gap-4">
+                                <div className="w-3/5">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
+                                    <input
+                                        type="date"
+                                        className="w-full p-2 mt-1 border rounded-lg dark:bg-gray-800 dark:text-white"
+                                        {...register("date", { required: "Date is required" })}
+                                    />
+                                    {errors.date && <p className="text-red-500 text-sm">{errors.date.message}</p>}
+                                </div>
+
+                                <div className="w-2/5">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Time (hrs)</label>
+                                    <input
+                                        type="number"
+                                        step="0.05"
+                                        className="w-full p-2 mt-1 border rounded-lg dark:bg-gray-800 dark:text-white"
+                                        {...register("time", { required: "Time is required" })}
+                                    />
+                                    {errors.time && <p className="text-red-500 text-sm">{errors.time.message}</p>}
                                 </div>
                             </div>
-                            <div className="flex gap-4">
+
+                            <div className="flex gap-4 mt-4">
                                 <button
-                                    type="submit"
-                                    className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
-                                transition"
+                                    type="button"
+                                    className="w-full px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg"
                                     onClick={() => {
                                         reset();
-                                        setEditModal({
-                                            id: null,
-                                            status: false,
-                                            title: '',
-                                            description: '',
-                                            taskStatus: '',
-                                            date: '',
-                                            time: 0
-                                        })
-                                    }}>
+                                        setEditModal({ id: null, status: false, title: '', description: '', taskStatus: '', date: '', time: 0 });
+                                    }}
+                                >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="w-full px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-medium
-                                transition"
+                                    className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                                 >
-                                    {isSubmitting ? "Updating Task..." : "Update Task"}
+                                    {isSubmitting ? "Updating..." : "Update Task"}
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
