@@ -138,7 +138,7 @@ const Dashboard = () => {
                         <div key={task.id}
                              className={`p-4 ${darkMode ? "bg-black/80" : "bg-white/80"} backdrop-blur-sm rounded-lg 
                              flex justify-between items-center w-full`}>
-                            <div className="min-w-0">
+                            <div className="min-w-0 w-full">
                                 <div className="flex justify-between items-center">
                                     <h3 className={`text-lg font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
                                         {task.title}
