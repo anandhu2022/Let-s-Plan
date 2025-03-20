@@ -116,7 +116,7 @@ const ViewTasks = () => {
     }
 
     return (
-        <div className={"flex flex-col w-full h-full"}>
+        <div className={"flex flex-col w-full h-full relative"}>
             <div className="shadow-lg rounded-2xl overflow-x-auto">
                 <table className="w-full border-collapse shadow-md ">
                     <thead className={`${darkMode ? "text-gray-100 bg-black/40" : "text-gray-700 bg-white/40"} 

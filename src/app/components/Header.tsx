@@ -9,7 +9,7 @@ import TotalWorkedHours from "@/app/components/TotalWorkedHours";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import {Close, LightMode, Menu} from "@mui/icons-material";
 import useTheme from "@/app/context/Theme/useTheme";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 const Header = () => {
     const {user, logout} = useAuth();
@@ -17,10 +17,8 @@ const Header = () => {
     const router = useRouter();
     const [modal, setModal] = useState<boolean>(false);
     const pathname = usePathname();
-    const isAuthPage = pathname.startsWith('/sign-in') || pathname.startsWith('/signup');
-    useEffect(() => {
-        document.body.style.backgroundImage = `url(${darkMode ? "./DarkThemeBanner.png" : "./banner.png"})`;
-    }, [darkMode]);
+    const isAuthPage = pathname.endsWith('/sign-in') || pathname.endsWith('/signup');
+    const isAdminPage = pathname.startsWith('/admin');
     return (
         <div className="flex w-full justify-between items-center h-full">
             <div className="flex flex-row items-center gap-1">
@@ -30,11 +28,11 @@ const Header = () => {
                      }}>
                     <Menu className={darkMode ? "text-white" : "text-black"}/>
                 </div>
-                <Link href="/" className={`cursor-pointer ${darkMode && "bg-white/30 rounded-2xl"} `}>
+                <Link href={isAdminPage? "/admin":"/user"} className={`cursor-pointer ${darkMode && "bg-white/30 rounded-2xl"} `}>
                     <Image src="/LetsPlanLogo.svg" alt="logo" width={150} height={40}/>
                 </Link>
             </div>
-            {!isAuthPage && (
+            {!isAuthPage && !isAdminPage && (
                 <div className="hidden sm:block">
                     <div className={`${darkMode ? "bg-black/50" : "bg-white/50"} backdrop-blur-md shadow-lg rounded-xl 
                     p-1.5 border-t-4 border-red-500 text-center flex flex-row items-center min-w-58`}>
@@ -52,7 +50,7 @@ const Header = () => {
                 <button
                     onClick={() => {
                         if (user) logout();
-                        router.push("/sign-in");
+                        router.push("/user/sign-in");
                     }}
                     className={`bg-indigo-500/20 p-1.5 rounded-xl ${darkMode ? "text-white" : "text-black"} transform
                         duration-500 ease-out backdrop-blur-md border border-white/30 shadow-lg
@@ -115,7 +113,7 @@ const Header = () => {
                         <button
                             onClick={() => {
                                 logout();
-                                router.push('/sign-in');
+                                router.push(isAdminPage? '/admin/sign-in': "/user/sign-in")
                             }}
                             className={`w-full block py-2 px-4 rounded-lg text-gray-900 font-medium hover:bg-red-500
                         hover:text-white transition text-left ${darkMode ? "text-white" : "text-black"}`}>

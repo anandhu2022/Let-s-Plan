@@ -30,7 +30,7 @@ const AuthProvider = ({children}: ContextProviderProps) => {
 
         if (result.success) {
             setUser(result.user);
-            router.push('/')
+            router.push('/user');
         }
 
         return {

@@ -1,18 +1,13 @@
 import {NextResponse} from "next/server";
-import {cookies} from "next/headers";
 import {PrismaClient} from "@prisma/client";
+import {getUserId} from "@/app/libs/UserManagement";
 
 const prisma = new PrismaClient();
 
 export const POST = async () => {
     try {
-        // const request = await req.json();
-
-        const cookieStore = await cookies();
-        const sessionToken = cookieStore.get('session')?.value;
-
-        if (sessionToken) {
-            const [userId] = sessionToken.split(":");
+        const userId = await getUserId();
+        if (userId) {
             const user = await prisma.user.findUnique({
                 where: {id: Number(userId)}
             });

@@ -12,8 +12,15 @@ model User {
   username String?
   email    String  @unique
   password String
-  role     Roles?
   task     Task[]
+}
+
+model Admin_Users {
+  id       Int     @id @default(autoincrement())
+  username String?
+  email    String  @unique
+  password String
+  Roles    Roles?
 }
 
 model Task {
@@ -30,11 +37,11 @@ model Task {
 }
 
 model Roles {
-  id          Int               @id @default(autoincrement())
-  roleName    String
-  userId      Int?              @unique
-  user        User?             @relation(fields: [userId], references: [id])
-  permissions RolePermissions[]
+  id              Int               @id @default(autoincrement())
+  roleName        String
+  adminUserId     Int?              @unique
+  user            Admin_Users?      @relation(fields: [adminUserId], references: [id])
+  RolePermissions RolePermissions[]
 }
 
 model Permissions {

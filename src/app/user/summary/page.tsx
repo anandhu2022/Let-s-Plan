@@ -32,8 +32,10 @@ const Summary = () => {
     }, [user?.id]);
 
     useEffect(() => {
-        const totalTime = taskSummary.taskYesterday.reduce((total, task) =>
-            total + Number(task.time || 0), 0);
+        const totalTime = taskSummary.taskYesterday.reduce(
+            (total, task) => total + (task.taskStatus === "Completed" ? Number(task.time || 0) : 0),
+            0
+        );
         setPreviousDayLogTime(totalTime);
     }, [taskSummary.taskYesterday]);
 

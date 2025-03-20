@@ -30,7 +30,6 @@ const AddTask = () => {
     const onSubmit = async ({title, description, time, taskStatus}: TaskProps) => {
         try {
             const formattedDate: string = selectedDate.format("DD-MM-YYYY");
-            console.log(title, description, time, formattedDate);
             if (!title || !description || !time || !user?.id || !taskStatus) {
                 setModal({
                     enabled: true,

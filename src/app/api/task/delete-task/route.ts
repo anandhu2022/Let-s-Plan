@@ -14,7 +14,6 @@ export const DELETE = async (req: NextRequest) => {
     })
 
 
-    console.log(taskId)
     return new NextResponse(JSON.stringify({response: response}), {
         status: 200,
         headers: {

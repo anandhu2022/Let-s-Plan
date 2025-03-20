@@ -11,7 +11,7 @@ const TotalWorkedHours = () => {
     const [time, setTime] = useState<number | null>(null);
     useEffect(() => {
         if (user?.id) {
-            fetch(`api/task/get-time?userId=${user?.id}`)
+            fetch(`/api/task/get-time?userId=${user?.id}`)
                 .then(response => response.json())
                 .then(data => {
                     setTime(data.totalTime);

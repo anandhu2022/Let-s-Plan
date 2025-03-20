@@ -13,7 +13,7 @@ async function main() {
         process.exit(1);
     }
 
-    const existingAdmin = await prisma.user.findUnique({where: {email}});
+    const existingAdmin = await prisma.admin_Users.findUnique({where: {email}});
 
     if (!existingAdmin) {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,19 +36,19 @@ async function main() {
                 permissionId: permissions.id
             },
         });
-        const user = await prisma.user.create({
+        const adminUser = await prisma.admin_Users.create({
             data: {
                 email,
                 password: hashedPassword,
             },
         });
-        console.log("Admin account created:", user.email);
+        console.log("Admin account created:", adminUser.email);
         await prisma.roles.update({
             where: {
                 id: role.id,
             },
             data: {
-                userId: user.id,
+                adminUserId: adminUser.id,
             },
         });
         console.log("Super Admin role assigned to Admin account");
