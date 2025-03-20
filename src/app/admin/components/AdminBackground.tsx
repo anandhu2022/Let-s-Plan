@@ -6,10 +6,10 @@ import {ReactNode, useEffect} from "react";
 const AdminBackground = ({children}: { children: ReactNode }) => {
     const {darkMode} = useTheme();
     useEffect(() => {
-        // document.body.style.backgroundColor = ${darkMode ? "" : "/banner.png"};
+        document.body.style.backgroundColor = darkMode ? "#0f172a" : "#f0f4f8";
     }, [darkMode]);
     return (
-        <div className={`w-full sm:h-[85%] lg:h-[90%]`}>
+        <div className={`w-full h-full ${darkMode?"text-white" : "text-black"}`}>
             {children}
         </div>
     );
