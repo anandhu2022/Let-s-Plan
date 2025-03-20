@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import PersonIcon from "@mui/icons-material/Person";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import useAuth from "@/app/context/Auth/useAuth";
 import TotalWorkedHours from "@/app/components/TotalWorkedHours";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -16,6 +16,8 @@ const Header = () => {
     const {darkMode, toggleTheme} = useTheme();
     const router = useRouter();
     const [modal, setModal] = useState<boolean>(false);
+    const pathname = usePathname();
+    const isAuthPage = pathname.startsWith('/sign-in') || pathname.startsWith('/signup');
     useEffect(() => {
         document.body.style.backgroundImage = `url(${darkMode ? "./DarkThemeBanner.png" : "./banner.png"})`;
     }, [darkMode]);
@@ -32,16 +34,18 @@ const Header = () => {
                     <Image src="/LetsPlanLogo.svg" alt="logo" width={150} height={40}/>
                 </Link>
             </div>
-            <div className="hidden sm:block">
-                <div className={`${darkMode ? "bg-black/50" : "bg-white/50"} backdrop-blur-md shadow-lg rounded-xl p-1.5 
-        border-t-4 border-red-500 text-center flex flex-row items-center`}>
-                    <TotalWorkedHours/>
+            {!isAuthPage && (
+                <div className="hidden sm:block">
+                    <div className={`${darkMode ? "bg-black/50" : "bg-white/50"} backdrop-blur-md shadow-lg rounded-xl 
+                    p-1.5 border-t-4 border-red-500 text-center flex flex-row items-center min-w-58`}>
+                        <TotalWorkedHours/>
+                    </div>
                 </div>
-            </div>
+            )}
             <div className="flex items-center gap-4">
                 <div
                     onClick={toggleTheme}
-                className="cursor-pointer">
+                    className="cursor-pointer">
                     {darkMode ? <DarkModeIcon className="text-blue-500"/> :
                         <LightMode className="text-yellow-500"/>}
                 </div>

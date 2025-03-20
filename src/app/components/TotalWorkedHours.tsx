@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import useAuth from "@/app/context/Auth/useAuth";
 import useTask from "@/app/context/Task/useTask";
 import useTheme from "@/app/context/Theme/useTheme";
+import {CircularProgress} from "@mui/material";
 
 const TotalWorkedHours = () => {
     const {user} = useAuth();
@@ -22,11 +23,10 @@ const TotalWorkedHours = () => {
             <h3 className={`${darkMode ? "text-white" : "text-black"} text-xl font-semibold sm:text-sm text-gray-900`}>
                 Total Hrs logged today: &nbsp;</h3>
             <p className={`${darkMode ? "text-white" : "text-black"} text-2xl sm:text-sm font-bold sm:font-normal`}>
-                {user?.id ? time != null ? time + " hour(s)" : "loading" : "Please Login"}
+                {time != null ? time + " hour(s)" : <CircularProgress size={15}/>}
             </p>
         </>
-    )
-        ;
+    );
 };
 
 export default TotalWorkedHours;

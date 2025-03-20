@@ -62,7 +62,8 @@ const Summary = () => {
                             (
                                 (taskSummary?.taskToday?.length > 0 ?
                                     (taskSummary?.taskToday?.map((task: TaskProps, index: number) => (
-                                        <tr key={index} className="border-t hover:bg-gray-900">
+                                        <tr key={index}
+                                            className={`border-t ${darkMode ? "hover:bg-gray-900" : "hover:bg-gray-100"}`}>
                                             <td className="py-3 px-4">{task.title}</td>
                                             <td className="py-3 px-4 max-w-110">{task.description}</td>
                                             <td className="py-3 px-4">{task.time}</td>
@@ -129,7 +130,7 @@ const Summary = () => {
                             (
                                 (taskSummary?.taskYesterday?.length > 0 ?
                                     (taskSummary?.taskYesterday?.map((task: TaskProps, index: number) => (
-                                        <tr key={index} className="border-t hover:bg-gray-900">
+                                        <tr key={index} className={`border-t ${darkMode?"hover:bg-gray-900":"hover:bg-gray-100"}`}>
                                             <td className="py-3 px-4">{task.title}</td>
                                             <td className="py-3 px-4 max-w-110">{task.description}</td>
                                             <td className="py-3 px-4">{task.time}</td>

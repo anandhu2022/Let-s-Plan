@@ -36,10 +36,14 @@ const Login = () => {
                     className={`w-full p-3 bg-transparent border ${darkMode ? "border-white/40 " +
                         "focus:border-white placeholder-white/40" : "border-black/40 focus:border-black " +
                         "placeholder-black/40"} rounded-sm focus:outline-none`}
-                    placeholder="Username"
+                    placeholder="Email"
                     autoComplete="email"
                     {...register('email', {
-                        required: "Username is required"
+                        required: "Email is required",
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Invalid email address",
+                        },
                     })}
                 />
 

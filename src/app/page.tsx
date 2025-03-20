@@ -130,7 +130,7 @@ const Dashboard = () => {
             </div>
 
             <div className={`${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm p-6 shadow-lg 
-            rounded-xl lg:overflow-hidden w-full`}>
+            rounded-xl lg:overflow-hidden w-full h-full`}>
                 <h2 className={`text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
                     Recent Tasks
                 </h2>
