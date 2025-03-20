@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -35,6 +36,7 @@
     "eslint-config-next": "15.2.1",
     "prisma": "^6.4.1",
     "tailwindcss": "^4",
+    "tsx": "^4.19.3",
     "typescript": "^5"
   }
 }
