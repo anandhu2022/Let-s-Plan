@@ -1,13 +1,50 @@
 "use client"
 
 import Container from "@/app/admin/components/Container";
-import {DarkMode, LightMode} from "@mui/icons-material";
+import {DarkMode, LightMode, Visibility} from "@mui/icons-material";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useTheme from "@/app/context/Theme/useTheme";
 import Input from "@/app/admin/components/form/Input";
 import Button from "@/app/admin/components/form/Button";
+import {useForm} from "react-hook-form";
+import {AdminLoginProps} from "@/app/admin/lib/types";
+import {useState} from "react";
+import {useAdminAuth} from "@/app/admin/context/auth/useAdminAuth";
 
 const Login = () => {
     const {darkMode, toggleTheme} = useTheme();
+    const {login} = useAdminAuth()
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [loginStatus, setLoginStatus] = useState<{ success: boolean, message: string } | null>(null);
+    const {register, handleSubmit, formState} = useForm<AdminLoginProps>({
+        defaultValues: {
+            email: '',
+            password: ''
+        },
+    });
+    const {errors, isSubmitting} = formState;
+    const emailValidation = {
+        required: "This field is required",
+        pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: "Invalid email address",
+        },
+    };
+
+    const passwordValidation = {
+        required: "Password is required",
+        minLength: {
+            value: 5,
+            message: "Password must be at least 5 characters",
+        },
+    };
+
+    const onSubmit = async ({email, password}: AdminLoginProps) => {
+        const response = await login({email, password});
+        console.log(response);
+        setLoginStatus(response);
+    }
+
     return (
         <div className="w-screen h-screen flex justify-center items-center">
 
@@ -18,8 +55,8 @@ const Login = () => {
                 {darkMode ? <DarkMode fontSize={"small"}/> : <LightMode fontSize={"small"}/>}
             </div>
 
-            <Container>
-                <div className="flex flex-col gap-4 sm:w-80 md:w-100 lg:w-130">
+            <Container rounded={"rounded-md"}>
+                <div className="flex flex-col gap-4 sm:w-80 md:w-100 lg:w-130 my-3">
                     <div className="flex flex-row items-center gap-1">
                         <div className="">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="55" height="55">
@@ -32,18 +69,41 @@ const Login = () => {
                         </div>
                         <h1 className="text-xl font-semibold">Admin Login</h1>
                     </div>
-                    <form className="flex flex-col gap-2">
+                    <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="email">Email</label>
-                            <Input type={"text"} placeholder={"Email"}/>
+                            <Input
+                                id={"email"}
+                                type={"text"}
+                                placeholder={"Email"}
+                                autocomplete={"email"}
+                                {...register("email", emailValidation)}
+                            />
+                            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                         </div>
                         <div className="flex flex-col gap-2">
                             <label htmlFor="password">Password</label>
-                            <Input type={"password"} placeholder={"Password"}/>
+                            <div className="flex flex-col relative">
+                                <Input
+                                    id={"password"}
+                                    type={showPassword ? "test" : "password"}
+                                    placeholder={"Password"}
+                                    autocomplete={"current-password"}
+                                    {...register("password", passwordValidation)}
+                                />
+                                <div className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+                                     onClick={() => setShowPassword(!showPassword)}>
+                                    {showPassword ? <VisibilityOffIcon/> : <Visibility/>}
+                                </div>
+                            </div>
+                            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                         </div>
                         <div className="pt-4">
-                            <Button label={"Sign in"}/>
+                            <Button label={isSubmitting ? "Signing in . . ." : "Sign in"}/>
                         </div>
+                        {!loginStatus?.success && (
+                            <div className="text-red-500 text-center">{loginStatus?.message}</div>
+                        )}
                     </form>
                 </div>
             </Container>

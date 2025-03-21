@@ -8,9 +8,9 @@ export const getCookieValue = async ({session}: { session: string }) => {
     return cookieStore.get(session)?.value;
 }
 
-export const getUserId = async (): Promise<number | null> => {
+export const getUserId = async (cookieName:string): Promise<number | null> => {
     try {
-        const sessionToken = await getCookieValue({session: "session"});
+        const sessionToken = await getCookieValue({session: cookieName});
         if (sessionToken) {
             const [userId] = sessionToken.split(":");
             return Number(userId);
@@ -22,12 +22,12 @@ export const getUserId = async (): Promise<number | null> => {
 }
 
 export const getRoleName = async (): Promise<string | null> => {
-    const userId = await getUserId();
+    const adminUserId = await getUserId("session");
     try {
-        if (userId) {
+        if (adminUserId) {
             const role = await prisma.roles.findFirst({
                 where: {
-                    userId,
+                    adminUserId,
                 },
                 select: {
                     roleName: true,

@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 
 export const POST = async () => {
     try {
-        const userId = await getUserId("session");
+        const userId = await getUserId("adminSession");
         if (userId) {
-            const user = await prisma.user.findUnique({
+            const user = await prisma.admin_Users.findUnique({
                 where: {id: Number(userId)}
             });
             if (!user) return new NextResponse(JSON.stringify({user: null}), {status: 401});

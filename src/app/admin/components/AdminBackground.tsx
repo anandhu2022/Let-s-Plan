@@ -9,7 +9,7 @@ const AdminBackground = ({children}: { children: ReactNode }) => {
         document.body.style.backgroundColor = darkMode ? "#0f172a" : "#f0f4f8";
     }, [darkMode]);
     return (
-        <div className={`w-full h-full ${darkMode?"text-white" : "text-black"}`}>
+        <div className={`w-full h-full`}>
             {children}
         </div>
     );
