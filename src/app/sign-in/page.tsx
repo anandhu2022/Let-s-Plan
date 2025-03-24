@@ -1,13 +1,13 @@
 "use client"
 
-import Container from "@/app/admin/components/Container";
+import Container from "@/app/components/Container";
 import {DarkMode, LightMode, Visibility} from "@mui/icons-material";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useTheme from "@/app/context/Theme/useTheme";
-import Input from "@/app/admin/components/form/Input";
-import Button from "@/app/admin/components/form/Button";
+import Input from "@/app/components/form/Input";
+import Button from "@/app/components/form/Button";
 import {useForm} from "react-hook-form";
-import {AdminLoginProps} from "@/app/admin/lib/types";
+import {AdminLoginProps} from "@/app/lib/types";
 import {useState} from "react";
 import useAuth from "@/app/context/Auth/useAuth";
 
