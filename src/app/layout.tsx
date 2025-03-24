@@ -1,7 +1,9 @@
-import {Metadata} from "next";
 import {ReactNode} from "react";
-import './globals.css';
 import ThemeProvider from "@/app/context/Theme/ThemeContext";
+import {Metadata} from "next";
+import "./globals.css";
+import AuthProvider from "@/app/context/Auth/AuthContext";
+import HtmlWrapper from "./components/HtmlWrapper";
 
 export const metadata: Metadata = {
     title: "Let's Plan",
@@ -10,18 +12,17 @@ export const metadata: Metadata = {
         icon: "/LetsPlanIcon.svg"
     }
 }
-
-const layout = ({children}: { children: ReactNode }) => {
+const AdminLayout = ({children}: { children: ReactNode }) => {
     return (
-        <html lang="en">
-        <body className="bg-cover">
         <ThemeProvider>
-            {children}
+            <HtmlWrapper>
+                <AuthProvider>
+                    {children}
+                </AuthProvider>
+            </HtmlWrapper>
         </ThemeProvider>
-        </body>
-        </html>
 
     );
 };
 
-export default layout;
+export default AdminLayout;

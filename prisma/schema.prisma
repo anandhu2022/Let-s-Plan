@@ -8,55 +8,190 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String?
-  email    String  @unique
-  password String
-  task     Task[]
+  id            Int           @id @default(autoincrement())
+  first_name    String?
+  middle_name   String?
+  last_name     String?
+  username      String
+  mobile        String?
+  email         String        @unique
+  passwordHash  String
+  accountStatus String
+  registerdAt   DateTime      @default(now())
+  roleId        Int
+  role          Role          @relation(fields: [roleId], references: [id])
+  TeamMember    TeamMember[]
+  Project       Project[]
+  session       session[]
+  activity      activity[]
+  assignedTasks Task[]        @relation(name: "assignedUser")
+  createdTasks  Task[]        @relation(name: "creator")
+  UpdatedTask   Task[]        @relation(name: "updatedBy")
+  comments      comments[]
+  userStory     userStory[]
+  permissions   permissions[]
 }
 
-model Admin_Users {
-  id       Int     @id @default(autoincrement())
-  username String?
-  email    String  @unique
-  password String
-  Roles    Roles?
+model Role {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  Users       User[]
+  TeamMember  TeamMember[]
+  permissions permissions[]
+}
+
+model Priority {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Project Project[]
+  Task    Task[]
+}
+
+model ClientPartner {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  details       String
+  Project       Project[]
+  ClientContact ClientContact[]
+}
+
+model ClientContact {
+  id            Int           @id @default(autoincrement())
+  clientId      Int
+  contactType   String
+  contactId     String
+  clientPartner ClientPartner @relation(fields: [clientId], references: [id])
+  Project       Project[]
+}
+
+model Project {
+  id                 Int            @id @default(autoincrement())
+  title              String         @unique
+  plannedStartDate   DateTime
+  plannedEndDate     DateTime
+  actualStartDate    DateTime
+  actualEndDate      DateTime
+  projectDescription String
+  clientId           Int
+  priorityId         Int
+  priority           Priority       @relation(fields: [priorityId], references: [id])
+  clientPartner      ClientPartner  @relation(fields: [clientId], references: [id])
+  Team               Team[]
+  ClientContact      ClientContact? @relation(fields: [clientContactId], references: [id])
+  clientContactId    Int?
+  Task               Task[]
+  comments           comments[]
+  userStory          userStory[]
+  User               User?          @relation(fields: [userId], references: [id])
+  userId             Int?
+}
+
+model Team {
+  id         Int          @id @default(autoincrement())
+  title      String       @unique
+  projectId  Int
+  project    Project      @relation(fields: [projectId], references: [id])
+  TeamMember TeamMember[]
+}
+
+model TeamMember {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  teamId Int
+  roleId Int
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+  Team   Team @relation(fields: [teamId], references: [id])
+}
+
+model session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  sessionId String
+  IPaddress String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model activity {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  taskId       Int
+  activityType String
+  activityData String
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+  task         Task     @relation(fields: [taskId], references: [id])
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String  @db.VarChar(255)
-  date        String
-  time        Decimal @db.Decimal(65, 3)
+  id               Int         @id @default(autoincrement())
+  title            String      @unique
+  description      String
+  projectId        Int
+  userId           Int
+  createdBy        Int
+  updatedBy        Int
+  statusId         Int
+  estimatedTime    Decimal
+  completionTime   Decimal
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  plannedStartDate DateTime
+  plannedEndDate   DateTime
+  actualStartDate  DateTime
+  actualEndDate    DateTime
+  priorityId       Int
+  project          Project     @relation(fields: [projectId], references: [id])
+  assignedUser     User        @relation(fields: [userId], references: [id], name: "assignedUser")
+  createdByUser    User        @relation(fields: [createdBy], references: [id], name: "creator")
+  updatedByUser    User        @relation(fields: [updatedBy], references: [id], name: "updatedBy")
+  status           Status      @relation(fields: [statusId], references: [id])
+  priority         Priority    @relation(fields: [priorityId], references: [id])
+  activity         activity[]
+  comments         comments[]
+  userStory        userStory[]
+}
+
+model Status {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  task Task[]
+}
+
+model comments {
+  id        Int      @id @default(autoincrement())
+  comment   String
+  taskId    Int
+  projectId Int
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  task      Task     @relation(fields: [taskId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model userStory {
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
+  description String
+  projectId   Int
+  taskId      Int
   userId      Int
-  taskStatus  String
-  user        User    @relation(fields: [userId], references: [id], onDelete: NoAction)
-
-  @@index([userId], map: "Task_userId_fkey")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  project     Project  @relation(fields: [projectId], references: [id])
+  task        Task     @relation(fields: [taskId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 }
 
-model Roles {
-  id              Int               @id @default(autoincrement())
-  roleName        String
-  adminUserId     Int?              @unique
-  user            Admin_Users?      @relation(fields: [adminUserId], references: [id])
-  RolePermissions RolePermissions[]
-}
-
-model Permissions {
-  id             Int               @id @default(autoincrement())
-  permissionName String
-  status         Boolean
-  roles          RolePermissions[]
-}
-
-model RolePermissions {
-  id           Int         @id @default(autoincrement())
-  roleId       Int
-  role         Roles       @relation(fields: [roleId], references: [id])
-  permissionId Int
-  permission   Permissions @relation(fields: [permissionId], references: [id])
-
-  @@unique([roleId, permissionId])
+model permissions {
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  roleId Int
+  userId Int
+  role   Role   @relation(fields: [roleId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 }

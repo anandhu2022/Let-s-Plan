@@ -4,7 +4,7 @@
         width="250"
         height="250"
 >
-    <!-- Background Circle -->
+    <!-- HtmlWrapper Circle -->
     <circle cx="25" cy="25" r="20" fill="#4F46E5"/> <!-- Tailwind Indigo-600 -->
 
     <!-- Calendar Icon -->
