@@ -1,6 +1,6 @@
 "use client";
 
-import {InputProps} from "@/app/admin/lib/types";
+import {InputProps} from "@/app/libs/types";
 import useTheme from "@/app/context/Theme/useTheme";
 
 const Input = ({id, type, placeholder, autocomplete, className, ...rest}: InputProps) => {

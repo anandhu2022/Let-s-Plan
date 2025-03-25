@@ -7,7 +7,7 @@ const HtmlWrapper = ({children}: { children: ReactNode }) => {
     const {darkMode} = useTheme();
     return (
         <html lang="en">
-        <body className={`bg-cover ${darkMode ? "#0f172a" : "#f0f4f8"}`}>
+        <body className={darkMode ? "bg-[#0f172a]" : "bg-[#f0f4f8]"}>
         {children}
         </body>
         </html>

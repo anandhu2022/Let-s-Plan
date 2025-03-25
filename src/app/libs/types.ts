@@ -1,23 +1,22 @@
 "use client"
 
-import {ReactNode} from "react";
+import {InputHTMLAttributes, ReactNode} from "react";
 
-export interface UserProps {
-    id?: number;
-    email: string;
-    password?: string;
-    username?: string;
-}
-
-export interface UserInput {
-    id?: number;
+export interface UserLoginProps {
     email: string;
     password: string;
+}
+
+export interface UserProps {
+    id: number;
+    email: string;
     username: string;
+    firstName?: string;
+    lastName?: string;
 }
 
 export interface AuthContextProps {
-    login: ({email, password}: UserProps) => Promise<{
+    login: ({email, password}: UserLoginProps) => Promise<{
         success: boolean
         message: string,
     }>
@@ -48,4 +47,34 @@ export interface TaskProps {
 export interface ThemeContextProps {
     darkMode: boolean;
     toggleTheme: () => void;
+}
+
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    id: string;
+    type: string;
+    placeholder: string;
+    autocomplete?: string
+    className?: string;
+}
+
+export interface ButtonProps {
+    label: string;
+    classNames?: string;
+}
+
+export interface ProjectInputProps {
+    title: string;
+    projectDescription: string;
+    plannedStartDate?: string;
+    plannedEndDate?: string;
+    actualStartDate?: string;
+    actualEndDate?: string;
+    priorityId: number;
+    statusId: number;
+    userId?: number;
+}
+
+export interface ModalProps {
+    openModal: boolean;
+    closeModal: () => void;
 }

@@ -1,23 +1,21 @@
 import {NextResponse} from 'next/server';
 import type {NextRequest} from 'next/server';
+import {cookies} from "next/headers";
 
-export function middleware(req: NextRequest) {
+export const middleware = async (req: NextRequest) => {
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('sessionId');
+    if (!sessionId) {
+        return NextResponse.redirect(new URL('/sign-in', req.url));
+    }
     const {pathname} = req.nextUrl;
-
-    // if (pathname.startsWith('/user')) {
-    //     const sessionToken = req.cookies.get('session')?.value;
-    //     if (!sessionToken) {
-    //         return NextResponse.redirect(new URL('/user/sign-in', req.url));
-    //     }
-    // }
-    //
-    // if (pathname === '/') {
-    //     return NextResponse.redirect(new URL('/user', req.url));
-    // }
+    if (pathname === '/') {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/', '/user', '/user/tasks', '/user/add-task', '/user/summary', "/admin"],
+    matcher: ['/', '/dashboard', '/project/:pathname*'],
 };

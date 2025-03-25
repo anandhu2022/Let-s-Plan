@@ -1,4 +1,6 @@
 import {createHmac, randomBytes} from "node:crypto";
+import {NextRequest} from "next/server";
+import {cookies} from "next/headers";
 
 export const getSessionId: () => string = () => {
     return randomBytes(32).toString("hex");
@@ -13,4 +15,14 @@ export const getHashedSessionId = (sessionId: string) => {
     }
     return sessionId;
 
+}
+
+export const getIpAddress = (req: NextRequest) => {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "Unknown IP";
+    return ip.startsWith("::ffff:") ? ip.substring(7) : ip
+}
+
+export const getCookieValue = async (cookie: string) => {
+    const cookieStore = await cookies();
+    return cookieStore.get(cookie)?.value;
 }

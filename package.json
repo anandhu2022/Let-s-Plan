@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "createAdminAccount": "npx tsx prisma/createAdminAccount.ts"
+    "createAdminAccount": "npx tsx prisma/createAdminAccount.ts",
+    "sample-data": "npx tsx prisma/sampleData.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -18,6 +19,7 @@
     "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.2",
     "cookie": "^1.0.2",
+    "cron": "^4.1.0",
     "dayjs": "^1.11.13",
     "js-cookie": "^3.0.5",
     "next": "15.2.1",

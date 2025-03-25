@@ -12,7 +12,7 @@ export const metadata: Metadata = {
         icon: "/LetsPlanIcon.svg"
     }
 }
-const AdminLayout = ({children}: { children: ReactNode }) => {
+const Layout = ({children}: { children: ReactNode }) => {
     return (
         <ThemeProvider>
             <HtmlWrapper>
@@ -25,4 +25,4 @@ const AdminLayout = ({children}: { children: ReactNode }) => {
     );
 };
 
-export default AdminLayout;
+export default Layout;

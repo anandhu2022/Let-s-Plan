@@ -19,9 +19,17 @@
   - ```npm install tsx```
 ## Used this cmd in terminal for creating SESSION_SECRET key
 
-` node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+```
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
 
 ## For creating admin account run this command in fresh project terminal
 ```
 npm run createAdminAccount
+```
+
+## For creating sample data into the tables status and priorities run the following command
+
+```
+npm run sample-data
 ```

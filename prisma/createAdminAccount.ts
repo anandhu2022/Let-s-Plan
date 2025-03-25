@@ -17,13 +17,34 @@ async function main() {
 
     if (!existingUser) {
         const username: string = await askQuestion("Enter admin username: ");
-        const password: string = await askQuestion("Enter admin password: ");
+        const first_name: string = await askQuestion("Enter first name: ");
+        const last_name: string = await askQuestion("Enter admin last name: ");
+        let password: string;
+        let confirmPassword: string;
+
+        do {
+            password = await askQuestion("Enter admin password: ");
+            confirmPassword = await askQuestion("Confirm admin password: ");
+
+            if (password !== confirmPassword) {
+                console.log("❌ Passwords do not match! Please try again.");
+            }
+        } while (password !== confirmPassword);
+
+
         const accountStatus = "ACTIVE";
         const passwordHash: string = await bcrypt.hash(password, 10);
+
+        if (!email || !username || !password) {
+            console.error("Email, username, password cannot be empty.");
+            process.exit(1);
+        }
 
         const user = await prisma.user.create({
             data: {
                 username,
+                first_name: first_name ? first_name : null,
+                last_name: last_name ? last_name : null,
                 email,
                 passwordHash,
                 accountStatus,

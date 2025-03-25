@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function NotFound() {
     return (
-        <div className="w-full h-full flex justify-evenly items-center flex-row">
+        <div className="w-screen h-screen flex justify-evenly items-center flex-row">
             <Image src="/no-route.png" alt=""  height={200} width={400}/>
             <div className="flex flex-col text-red-700 gap-6">
                 <div className="text-9xl font-bold">404</div>

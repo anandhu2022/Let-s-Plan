@@ -18,8 +18,8 @@ model User {
   passwordHash  String
   accountStatus String
   registerdAt   DateTime      @default(now())
-  roleId        Int
-  role          Role          @relation(fields: [roleId], references: [id])
+  roleId        Int?
+  role          Role?         @relation(fields: [roleId], references: [id])
   TeamMember    TeamMember[]
   Project       Project[]
   session       session[]
@@ -67,15 +67,16 @@ model ClientContact {
 model Project {
   id                 Int            @id @default(autoincrement())
   title              String         @unique
-  plannedStartDate   DateTime
-  plannedEndDate     DateTime
-  actualStartDate    DateTime
-  actualEndDate      DateTime
+  plannedStartDate   String?
+  plannedEndDate     String?
+  actualStartDate    String?
+  actualEndDate      String?
   projectDescription String
-  clientId           Int
+  clientId           Int?
   priorityId         Int
+  statusId           Int
   priority           Priority       @relation(fields: [priorityId], references: [id])
-  clientPartner      ClientPartner  @relation(fields: [clientId], references: [id])
+  clientPartner      ClientPartner? @relation(fields: [clientId], references: [id])
   Team               Team[]
   ClientContact      ClientContact? @relation(fields: [clientContactId], references: [id])
   clientContactId    Int?
@@ -84,6 +85,7 @@ model Project {
   userStory          userStory[]
   User               User?          @relation(fields: [userId], references: [id])
   userId             Int?
+  status             Status         @relation(fields: [statusId], references: [id])
 }
 
 model Team {
@@ -107,8 +109,8 @@ model TeamMember {
 model session {
   id        Int      @id @default(autoincrement())
   userId    Int
-  sessionId String
-  IpAddress String
+  sessionId String   @unique
+  ipAddress String
   createdAt DateTime @default(now())
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id])
@@ -155,9 +157,10 @@ model Task {
 }
 
 model Status {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  task Task[]
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  task    Task[]
+  Project Project[]
 }
 
 model comments {

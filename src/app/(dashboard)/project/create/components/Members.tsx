@@ -30,7 +30,6 @@ const Members = () => {
         {name: 'Kamal'},
         {name: 'Nishanth'},
     ];
-    console.log(selectedTeamMembers);
     return (
         <Container classNames={`rounded-md w-full h-fit flex flex-col gap-3`}>
             <span>Team&nbsp;Members</span>

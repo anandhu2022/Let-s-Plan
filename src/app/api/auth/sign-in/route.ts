@@ -4,63 +4,62 @@ import bcrypt from 'bcryptjs';
 import {NextRequest, NextResponse} from "next/server";
 import {serialize} from "cookie";
 import {prisma} from "@/app/libs/prisma";
-import {getHashedSessionId, getSessionId} from "@/app/libs/generateSessionId";
+import {getHashedSessionId, getIpAddress, getSessionId} from "@/app/libs/authManagement";
 
 
 export const POST = async (req: NextRequest) => {
 
     try {
-        // const {email, password} = await req.json();
-        // if (!email || !password) {
-        //     return new NextResponse(JSON.stringify({success: false, message: "Missing required fields"}), {
-        //         status: 400,
-        //     });
-        // }
-        //
-        // const user = await prisma.user.findFirst({where: {email}});
-        // if (!user) {
-        //     return new NextResponse(JSON.stringify({success: false, message: "User not found"}), {
-        //         status: 404,
-        //     });
-        // }
-        // if (!(await bcrypt.compare(password, user.passwordHash))) {
-        //     return new NextResponse(JSON.stringify({success: false, message: "Invalid email or password"}), {
-        //         status: 401,
-        //     });
-        // }
-        const sessionId = getSessionId();
-        const hashedSessionId = getHashedSessionId(sessionId);
-        const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "Unknown IP";
-        console.log(sessionId);
-        console.log(hashedSessionId);
-        console.log(ip);
-        // const cookie = serialize("sessionId", sessionId, {
-        //     httpOnly: true,
-        //     path: '/',
-        //     maxAge: 60 * 60 * 24
-        // });
-        //
-        // await prisma.session.create({
-        //     data: {
-        //         userId: user.id,
-        //         sessionId: hashedSessionId,
-        //         IpAddress: "127.0.0.1",
-        //         expiresAt: new Date(Date.now() + 60 * 60 * 24),
-        //     }
-        // })
+        const {email, password} = await req.json();
+        if (!email || !password) {
+            return new NextResponse(JSON.stringify({success: false, message: "Missing required fields"}), {
+                status: 400,
+            });
+        }
+
+        const user = await prisma.user.findFirst({where: {email}});
+        if (!user) {
+            return new NextResponse(JSON.stringify({success: false, message: "User not found"}), {
+                status: 404,
+            });
+        }
+
+        if (!(await bcrypt.compare(password, user.passwordHash))) {
+            return new NextResponse(JSON.stringify({success: false, message: "Invalid email or password"}), {
+                status: 401,
+            });
+        }
+
+        const sessionId: string = getSessionId();
+        const hashedSessionId: string = getHashedSessionId(sessionId);
+        const ipAddress: string = getIpAddress(req);
+
+        const cookie = serialize("sessionId", sessionId, {
+            httpOnly: true,
+            path: '/',
+            maxAge: 60 * 60 * 24
+        });
+
+        await prisma.session.create({
+            data: {
+                userId: user.id,
+                sessionId: hashedSessionId,
+                ipAddress: ipAddress,
+                expiresAt: new Date(Date.now() + 60 * 60 * 24 * 1000),
+            }
+        });
 
         return new NextResponse(JSON.stringify({
             success: true,
             message: "Login Successful",
-            sessionId: sessionId,
-            hashedSessionId: hashedSessionId,
-            ip: ip
+            user: user
         }), {
             status: 200,
             headers: {
                 'content-type': 'application/json',
+                'Set-Cookie': cookie,
             }
-        })
+        });
 
     } catch (err) {
         console.error(err);

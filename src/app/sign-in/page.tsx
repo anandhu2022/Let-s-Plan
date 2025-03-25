@@ -7,16 +7,16 @@ import useTheme from "@/app/context/Theme/useTheme";
 import Input from "@/app/components/form/Input";
 import Button from "@/app/components/form/Button";
 import {useForm} from "react-hook-form";
-import {AdminLoginProps} from "@/app/lib/types";
 import {useState} from "react";
 import useAuth from "@/app/context/Auth/useAuth";
+import {UserLoginProps} from "@/app/libs/types";
 
 const Login = () => {
     const {darkMode, toggleTheme} = useTheme();
     const {login} = useAuth()
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [loginStatus, setLoginStatus] = useState<{ success: boolean, message: string } | null>(null);
-    const {register, handleSubmit, formState} = useForm<AdminLoginProps>({
+    const {register, handleSubmit, formState} = useForm<UserLoginProps>({
         defaultValues: {
             email: '',
             password: ''
@@ -39,8 +39,8 @@ const Login = () => {
         },
     };
 
-    const onSubmit = async ({email, password}: AdminLoginProps) => {
-        const response = await login({email, password});
+    const onSubmit = async ({email, password}: UserLoginProps) => {
+        const response: { success: boolean, message: string } = await login({email, password});
         console.log(response);
         setLoginStatus(response);
     }
@@ -67,7 +67,7 @@ const Login = () => {
                                 <rect x="28" y="17" width="4" height="4" fill={darkMode ? "#624bff" : "#ffffff"}/>
                             </svg>
                         </div>
-                        <h1 className="text-xl font-semibold">Admin Login</h1>
+                        <h1 className="text-xl font-semibold">Login </h1>
                     </div>
                     <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-2">

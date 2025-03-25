@@ -21,24 +21,24 @@ export const getUserId = async (cookieName:string): Promise<number | null> => {
     return null;
 }
 
-export const getRoleName = async (): Promise<string | null> => {
-    const adminUserId = await getUserId("session");
-    try {
-        if (adminUserId) {
-            const role = await prisma.roles.findFirst({
-                where: {
-                    adminUserId,
-                },
-                select: {
-                    roleName: true,
-                },
-            })
-            if (role?.roleName) {
-                return role.roleName;
-            }
-        }
-    } catch (err) {
-        console.error("Error getting user role:", err);
-    }
-    return null;
-}
+// export const getRoleName = async (): Promise<string | null> => {
+    // const adminUserId = await getUserId("session");
+    // try {
+    //     if (adminUserId) {
+    //         const role = await prisma.roles.findFirst({
+    //             where: {
+    //                 adminUserId,
+    //             },
+    //             select: {
+    //                 roleName: true,
+    //             },
+    //         })
+    //         if (role?.roleName) {
+    //             return role.roleName;
+    //         }
+    //     }
+    // } catch (err) {
+    //     console.error("Error getting user role:", err);
+    // }
+    // return null;
+// }
