@@ -23,5 +23,5 @@
 
 ## For creating admin account run this command in fresh project terminal
 ```
-npm run seed admin@admin.com admin
+npm run createAdminAccount
 ```

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "npx tsx prisma/seed.ts"
+    "createAdminAccount": "npx tsx prisma/createAdminAccount.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
