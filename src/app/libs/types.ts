@@ -59,7 +59,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export interface ButtonProps {
     label: string;
-    classNames?: string;
+    className?: string;
 }
 
 export interface ProjectInputProps {
@@ -74,7 +74,40 @@ export interface ProjectInputProps {
     userId?: number;
 }
 
+
+export interface ProjectProps extends ProjectInputProps {
+    id: number;
+    status: string;
+    priority: string;
+}
+
+export interface StatusPriorityProps {
+    id: number;
+    name: string;
+}
+
+
+export interface UserSignupProps {
+    username: string;
+    first_name: string;
+    last_name?: string;
+    email: string;
+    mobile?: string;
+    password: string;
+    confirmPassword: string;
+}
+
 export interface ModalProps {
-    openModal: boolean;
-    closeModal: () => void;
+    isOpen: boolean;
+    message: string;
+    success?: boolean;
+    onClose: () => void;
+}
+
+export interface PendingApprovalProps {
+    id: number;
+    email: string;
+    username: string;
+    registeredAt: string;
+    mobile: string;
 }

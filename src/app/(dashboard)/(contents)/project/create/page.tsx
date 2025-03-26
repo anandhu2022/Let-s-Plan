@@ -1,16 +1,16 @@
 "use client";
 
-import Container from "@/app/components/Container";
-import Input from "@/app/components/form/Input";
 import useTheme from "@/app/context/Theme/useTheme";
+import {ProjectInputProps, StatusPriorityProps} from "@/app/libs/types";
+import Container from "@/app/components/Container";
 import Button from "@/app/components/form/Button";
-import Members from "@/app/(dashboard)/project/create/components/Members";
-import Client from "@/app/(dashboard)/project/create/components/Client";
-import {useForm} from "react-hook-form";
-import {ProjectInputProps} from "@/app/libs/types";
 import useAuth from "@/app/context/Auth/useAuth";
-import {useState} from "react";
+import Input from "@/app/components/form/Input";
+import Members from "./components/Members";
 import Modal from "@/app/components/Modal";
+import Client from "./components/Client";
+import {useForm} from "react-hook-form";
+import {useEffect, useState} from "react";
 
 const Page = () => {
     const {darkMode} = useTheme();
@@ -21,6 +21,30 @@ const Page = () => {
     const closeModal = () => {
         setResponse({success: !response.success});
     }
+    const [statuses, setStatuses] = useState<StatusPriorityProps[] | []>([]);
+    const [priority, setPriority] = useState<StatusPriorityProps[] | []>([]);
+    useEffect(() => {
+        const fetchStatusAndPriorities = async () => {
+            try {
+                const response = await fetch(`/api/projects/statusAndPriorities`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch status and priorities");
+                }
+                const {statuses, priorities}: {
+                    statuses: StatusPriorityProps[],
+                    priorities: StatusPriorityProps[]
+                } = await response.json();
+                setStatuses(statuses);
+                setPriority(priorities);
+
+            } catch (error) {
+                console.error("Failed to fetch status and priorities", error);
+            }
+        }
+        fetchStatusAndPriorities()
+            .then();
+    }, []);
+
     const onSubmit = async ({
                                 title,
                                 projectDescription,
@@ -55,12 +79,13 @@ const Page = () => {
         const {message, success} = await response.json();
         setResponse({success, message});
     }
+    console.log(statuses);
     return (
-        <div className={`flex flex-col p-4 w-full`}>
+        <div className={`flex flex-col w-full`}>
             <span className={`text-[#64747a] pb-4 text-2xl font-semibold`}>Create new project</span>
             <div className={`flex flex-row gap-3`}>
                 <form className={`flex flex-col gap-3 w-2/3`} onSubmit={handleSubmit(onSubmit)}>
-                    <Container classNames={`rounded-md flex flex-col gap-3 w-full`}>
+                    <Container className={`rounded-md flex flex-col gap-3 w-full`}>
                         <div className={`flex flex-col gap-1.5`}>
                             <span>Name:</span>
                             <Input
@@ -147,9 +172,11 @@ const Page = () => {
                                     {...register("priorityId", {required: true})}
                                 >
                                     <option value="">Select Priority</option>
-                                    <option value="3">High</option>
-                                    <option value="2">Medium</option>
-                                    <option value="1">Low</option>
+                                    {
+                                        priority.map((priority, index) => (
+                                            <option key={index} value={priority.id}>{priority.name}</option>
+                                        ))
+                                    }
                                 </select>
                                 {errors.priorityId && <span className={`text-[#ff0000]`}>This field is required</span>}
                             </div>
@@ -165,18 +192,18 @@ const Page = () => {
                                     {...register("statusId", {required: true})}
                                 >
                                     <option value="">Select status</option>
-                                    <option value="5">Pending</option>
-                                    <option value="4">Progress</option>
-                                    <option value="3">Completed</option>
-                                    <option value="2">Blocked</option>
-                                    <option value="1">On Hold</option>
+                                    {
+                                        statuses.map((status, index) => (
+                                            <option key={index} value={status.id}>{status.name}</option>
+                                        ))
+                                    }
                                 </select>
                                 {errors.statusId && <span className={`text-[#ff0000]`}>This field is required</span>}
                             </div>
                         </div>
                         <Button label={isSubmitting ? "Creating new project . . ." : "Create"}/>
                     </Container>
-                    <Container classNames={'rounded-md'}>
+                    <Container className={'rounded-md'}>
                         <span className={`text-xl`}>Attach files . . . Todo</span>
                     </Container>
                 </form>
@@ -185,7 +212,7 @@ const Page = () => {
                     <Client/>
                 </div>
             </div>
-            <Modal closeModal={closeModal} openModal={response.success}/>
+            {/*<Modal closeModal={closeModal} openModal={response.success}/>*/}
         </div>
     );
 };

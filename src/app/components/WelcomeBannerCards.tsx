@@ -10,7 +10,7 @@ const WelcomeBannerCards = () => {
     const {darkMode} = useTheme();
     return (
         <div className={`absolute bottom-0 flex flex-row w-full justify-evenly gap-5 px-5 transform translate-y-1/2`}>
-            <Container classNames={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
+            <Container className={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
             hover:-translate-y-2`}>
                 <div className={`flex flex-row justify-between w-full items-center`}>
                     <div>
@@ -29,7 +29,7 @@ const WelcomeBannerCards = () => {
                     </span>&nbsp;Completed
                 </div>
             </Container>
-            <Container classNames={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
+            <Container className={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
             hover:-translate-y-2`}>
                 <div className={`flex flex-row justify-between w-full items-center`}>
                     <div>
@@ -48,7 +48,7 @@ const WelcomeBannerCards = () => {
                     </span>&nbsp;Completed
                 </div>
             </Container>
-            <Container classNames={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
+            <Container className={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
             hover:-translate-y-2`}>
                 <div className={`flex flex-row justify-between w-full items-center`}>
                     <div>
@@ -67,7 +67,7 @@ const WelcomeBannerCards = () => {
                     </span>&nbsp;Completed
                 </div>
             </Container>
-            <Container classNames={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
+            <Container className={`rounded-md flex flex-1 justify-between flex-col gap-3 transform duration-500 
             hover:-translate-y-2`}>
                 <div className={`flex flex-row justify-between w-full items-center`}>
                     <div>

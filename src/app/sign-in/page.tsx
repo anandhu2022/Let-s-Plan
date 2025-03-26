@@ -10,12 +10,19 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import useAuth from "@/app/context/Auth/useAuth";
 import {UserLoginProps} from "@/app/libs/types";
+import {useRouter} from "next/navigation";
+import Modal from "@/app/components/Modal";
 
 const Login = () => {
+    const router = useRouter();
     const {darkMode, toggleTheme} = useTheme();
     const {login} = useAuth()
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [loginStatus, setLoginStatus] = useState<{ success: boolean, message: string } | null>(null);
+    const [modal, setModal] = useState<{ status: boolean; message: string; success?: boolean }>({
+        status: false,
+        message: "",
+        success: false,
+    });
     const {register, handleSubmit, formState} = useForm<UserLoginProps>({
         defaultValues: {
             email: '',
@@ -23,6 +30,7 @@ const Login = () => {
         },
     });
     const {errors, isSubmitting} = formState;
+
     const emailValidation = {
         required: "This field is required",
         pattern: {
@@ -40,14 +48,18 @@ const Login = () => {
     };
 
     const onSubmit = async ({email, password}: UserLoginProps) => {
-        const response: { success: boolean, message: string } = await login({email, password});
-        console.log(response);
-        setLoginStatus(response);
+        const {success, message}: { success: boolean, message: string } = await login({email, password});
+        if (!success) setModal({status: true, success, message})
     }
 
     return (
         <div className="w-screen h-screen flex justify-center items-center">
-
+            <Modal
+                isOpen={modal.status}
+                message={modal.message}
+                success={modal.success}
+                onClose={() => setModal({...modal, status: false})}
+            />
             <div className={`fixed right-7 top-7 p-2.5 rounded-full flex transition duration-300 
             ease-out cursor-pointer ${darkMode ? "text-gray-600 hover:text-gray-400 hover:bg-gray-700" :
                 "text-gray-400 hover:text-gray-700 hover:bg-gray-300"}`}
@@ -55,7 +67,7 @@ const Login = () => {
                 {darkMode ? <DarkMode fontSize={"small"}/> : <LightMode fontSize={"small"}/>}
             </div>
 
-            <Container classNames={"rounded-md"}>
+            <Container className={"rounded-md"}>
                 <div className="flex flex-col gap-4 sm:w-80 md:w-100 lg:w-130 my-3">
                     <div className="flex flex-row items-center gap-1">
                         <div className="">
@@ -101,10 +113,18 @@ const Login = () => {
                         <div className="pt-4">
                             <Button label={isSubmitting ? "Signing in . . ." : "Sign in"}/>
                         </div>
-                        {!loginStatus?.success && (
-                            <div className="text-red-500 text-center">{loginStatus?.message}</div>
-                        )}
                     </form>
+                    <div className="text-center text-sm">
+                        <span className={`${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+                            Don&#39;t have an account?&nbsp;
+                        </span>
+                        <button
+                            className="text-[#624bff] hover:underline cursor-pointer"
+                            onClick={() => router.push("/signup")}
+                        >
+                            Sign up
+                        </button>
+                    </div>
                 </div>
             </Container>
         </div>

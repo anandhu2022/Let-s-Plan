@@ -3,7 +3,7 @@ import Input from "@/app/components/form/Input";
 
 const Client = () => {
     return (
-        <Container classNames={`w-full rounded-md flex flex-col gap-3`}>
+        <Container className={`w-full rounded-md flex flex-col gap-3`}>
             <span>Client Details</span>
             <hr/>
             <div className={`flex flex-col gap-1.5`}>

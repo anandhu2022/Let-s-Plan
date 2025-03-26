@@ -16,7 +16,7 @@ const Sidebar = () => {
 
     return (
         <div className="fixed flex h-full w-1/6">
-            <Container classNames="w-full">
+            <Container className="w-full">
                 <div className="flex flex-row items-center gap-1 w-full">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="55" height="55">
@@ -33,16 +33,18 @@ const Sidebar = () => {
 
                 <ul className="flex flex-col p-1 pt-6 gap-3">
 
-                    <li className={`cursor-pointer hover:bg-gray-900 p-1.5 rounded-md transition duration-300 ease-out
+                    <li className={`cursor-pointer ${darkMode ? "hover:bg-gray-900" : "hover:bg-gray-300" +
+                        " hover:text-black"} p-1.5 rounded-md transition duration-300 ease-out
                     ${pathname.startsWith('/dashboard') && "text-[#624bff]"}`}
-                    onClick={() => router.push('/dashboard')}>
+                        onClick={() => router.push('/dashboard')}>
                         Dashboard
                     </li>
 
                     <li>
                         <button
                             onClick={() => handleMenuClick("project")}
-                            className={`w-full text-left cursor-pointer hover:bg-gray-900 p-1.5 rounded-md transition
+                            className={`w-full text-left cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} p-1.5 rounded-md transition
                                 duration-300 ease-out ${pathname.startsWith('/project') && "text-[#624bff]"}`}
                         >
                             Projects
@@ -52,22 +54,26 @@ const Sidebar = () => {
                                 openMenu === "project" ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
                             }`}
                         >
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/create') && "text-[#624bff]"}`}
-                            onClick={() => router.push('/project/create')}>
+                                onClick={() => router.push('/project/create')}>
                                 Create Project
                             </li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/list') && "text-[#624bff]"}`}
                                 onClick={() => router.push('/project/list')}>
-                                Project List</li>
+                                Project List
+                            </li>
                         </ul>
                     </li>
 
                     <li>
                         <button
                             onClick={() => handleMenuClick("teams")}
-                            className={`w-full text-left cursor-pointer hover:bg-gray-900 p-1.5 rounded-md transition
+                            className={`w-full text-left cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} p-1.5 rounded-md transition
                                 duration-300 ease-out ${pathname.startsWith('/teams') && "text-[#624bff]"}`}
                         >
                             Teams
@@ -77,19 +83,24 @@ const Sidebar = () => {
                                 openMenu === "teams" ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
                             }`}
                         >
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/create') && "text-[#624bff]"}`}>
-                                Create Team</li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                                Create Team
+                            </li>
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/list') && "text-[#624bff]"}`}>
-                                Team List</li>
+                                Team List
+                            </li>
                         </ul>
                     </li>
 
                     <li>
                         <button
                             onClick={() => handleMenuClick("tasks")}
-                            className={`w-full text-left cursor-pointer hover:bg-gray-900 p-1.5 rounded-md transition
+                            className={`w-full text-left cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} p-1.5 rounded-md transition
                                 duration-300 ease-out ${pathname.startsWith('/tasks') && "text-[#624bff]"}`}
                         >
                             Tasks
@@ -99,15 +110,18 @@ const Sidebar = () => {
                                 openMenu === "tasks" ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"
                             }`}
                         >
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/create') && "text-[#624bff]"}`}>
                                 Create Task
                             </li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/list') && "text-[#624bff]"}`}>
                                 Task List
                             </li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/board') && "text-[#624bff]"}`}>
                                 Task Board
                             </li>
@@ -116,37 +130,54 @@ const Sidebar = () => {
 
                     <li>
                         <button
-                            onClick={() => handleMenuClick("userManagement")}
-                            className={`w-full text-left cursor-pointer hover:bg-gray-900 p-1.5 rounded-md transition
+                            onClick={() => handleMenuClick("users")}
+                            className={`w-full text-left cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} p-1.5 rounded-md transition
                                 duration-300 ease-out ${pathname.startsWith('/users') && "text-[#624bff]"}`}
                         >
                             User Management
                         </button>
                         <ul
                             className={`overflow-hidden transition-all duration-500 ${
-                                openMenu === "userManagement" ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                                openMenu === "users" ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                             }`}
                         >
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/create') && "text-[#624bff]"}`}>
-                                Create&nbsp;User</li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
-                             ${pathname.startsWith('/project/list') && "text-[#624bff]"}`}>
-                                User&nbsp;List</li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                                Create&nbsp;User
+                            </li>
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
+                             ${pathname.startsWith('/project/list') && "text-[#624bff]"}`}
+                            onClick={()=> router.push('/users/list')}>
+                                User&nbsp;List
+                            </li>
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/roles') && "text-[#624bff]"}`}>
-                                User&nbsp;Roles</li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                                User&nbsp;Roles
+                            </li>
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/permissions') && "text-[#624bff]"}`}>
                                 User&nbsp;Permissions
                             </li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/notifications') && "text-[#624bff]"}`}>
                                 User&nbsp;Notifications
                             </li>
-                            <li className={`pl-6 py-1 my-2 cursor-pointer hover:bg-gray-900 rounded-md
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
                              ${pathname.startsWith('/project/activity') && "text-[#624bff]"}`}>
                                 User&nbsp;Activity
+                            </li>
+                            <li className={`pl-6 py-1 my-2 cursor-pointer ${darkMode ? "hover:bg-gray-900" :
+                                "hover:bg-gray-300 hover:text-black"} rounded-md
+                             ${pathname.startsWith('/users/approve') && "text-[#624bff]"}`}
+                            onClick={()=> router.push('/users/approve')}>
+                                Approve&nbsp;Accounts
                             </li>
                         </ul>
                     </li>

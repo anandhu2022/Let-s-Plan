@@ -29,7 +29,14 @@ export const POST = async (req: NextRequest) => {
                 status: 401,
             });
         }
-
+        if (user.accountStatus === "PENDING APPROVAL") {
+            return new NextResponse(JSON.stringify({
+                success: false,
+                message: "User account is pending approval, contact admin for approval."
+            }), {
+                status: 403,
+            });
+        }
         const sessionId: string = getSessionId();
         const hashedSessionId: string = getHashedSessionId(sessionId);
         const ipAddress: string = getIpAddress(req);

@@ -3,7 +3,7 @@ import React from 'react';
 const Page = () => {
     return (
         <div>
-          Create a new project
+          Approve Section
         </div>
     );
 };

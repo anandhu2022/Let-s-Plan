@@ -13,7 +13,7 @@ const Page = ({children}:{children:ReactNode}) => {
                     <div className={`flex w-full`}>
                         <Header/>
                     </div>
-                    <div>
+                    <div className={`h-full`}>
                         {children}
                     </div>
                 </div>

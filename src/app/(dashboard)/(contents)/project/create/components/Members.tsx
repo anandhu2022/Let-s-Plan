@@ -31,7 +31,7 @@ const Members = () => {
         {name: 'Nishanth'},
     ];
     return (
-        <Container classNames={`rounded-md w-full h-fit flex flex-col gap-3`}>
+        <Container className={`rounded-md w-full h-fit flex flex-col gap-3`}>
             <span>Team&nbsp;Members</span>
             <hr/>
             <RadioGroup row value={action} onChange={(e) =>
