@@ -12,6 +12,12 @@ export const changeAccountStatus = async ({id, status}: { id: number, status: st
 
 export const getUsers = async () => {
     return prisma.user.findMany({
-        select: {id: true, email: true, accountStatus: true}
+        select: {
+            id: true,
+            email: true,
+            username: true,
+            accountStatus: true,
+            roleId: true
+        }
     });
 }
