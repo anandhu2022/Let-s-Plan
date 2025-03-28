@@ -22,6 +22,18 @@ const main = async () => {
         ]
     });
     console.log("Priorities created successfully");
+
+    await prisma.role.create({
+        data: {
+            name: "SUPER_ADMIN",
+            Permission: {
+                create: {
+                    name: "ADMIN_ALL"
+                }
+            }
+        }
+    });
+    console.log("Super admin role created successfully");
 }
 
 main().catch(console.error);

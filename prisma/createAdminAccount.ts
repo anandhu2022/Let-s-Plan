@@ -55,42 +55,18 @@ async function main() {
 
         const existingRole = await prisma.role.findUnique({where: {name: "SUPER_ADMIN"}});
         if (!existingRole) {
-            const role = await prisma.role.create({
-                data: {
-                    name: "SUPER_ADMIN",
-                },
-            });
-            console.log("Role created for Admin:", role.name);
-
-            const permissions = await prisma.permissions.create({
-                data: {
-                    name: "ADMIN_ALL",
-                    roleId: role.id,
-                    userId: user.id
-                },
-            });
-            console.log("Permission created for Admin:", permissions.name);
-
-            await prisma.user.update({
-                where: {
-                    id: user.id,
-                },
-                data: {
-                    roleId: role.id,
-                },
-            });
-            console.log("Super Admin role assigned to Admin account");
-        } else {
-            await prisma.user.update({
-                where: {
-                    id: user.id,
-                },
-                data: {
-                    roleId: existingRole.id,
-                },
-            });
-            console.log("Super Admin role assigned to Admin account");
+            console.error("Super Admin role not found. Please create sample data.");
+            process.exit(1);
         }
+        await prisma.user.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                roleId: existingRole.id,
+            },
+        });
+        console.log("Super Admin role assigned to Admin account");
     } else {
         console.log(`Admin account already exists for ${email}. Skipping...`);
         const changePassword = await askQuestion("Change admin password? (yes/no): ");
