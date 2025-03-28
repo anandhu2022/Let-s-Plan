@@ -70,3 +70,28 @@ export const getAllPermissions = async () => {
         select: {name: true}
     });
 }
+
+export const getRolesAndPermissions = async () => {
+    return prisma.role.findMany({
+        select: {
+            id: true,
+            name: true,
+            Permission: {
+                select: {name: true}
+            }
+        }
+    });
+}
+
+export const getUsersByRole = async ({roleId}: {roleId: number}) => {
+    return prisma.user.findMany({
+        where: {roleId: roleId},
+        select: {
+            id: true,
+            email: true,
+            username: true,
+            accountStatus: true,
+            roleId: true
+        }
+    })
+}

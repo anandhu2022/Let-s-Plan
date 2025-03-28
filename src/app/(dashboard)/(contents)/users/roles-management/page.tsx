@@ -2,17 +2,18 @@
 
 import {useForm} from "react-hook-form";
 import {Close} from "@mui/icons-material";
+import Modal from "@/app/components/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import Input from "@/app/components/form/Input";
 import React, {useEffect, useState} from "react";
-import {PermissionProps} from "@/app/libs/types";
 import Button from "@/app/components/form/Button";
 import Container from "@/app/components/Container";
 import useTheme from "@/app/context/Theme/useTheme";
 import SearchIcon from "@mui/icons-material/Search";
 import ModalContainer from "@/app/components/ModalContainer";
-import {createRoleAndAssignPermissions, getAllPermissions} from "@/app/actions/account";
-import Modal from "@/app/components/Modal";
+import {PermissionProps, RolesAndPermissionsProps} from "@/app/libs/types";
+import RolesListing from "@/app/(dashboard)/(contents)/users/roles-management/components/RolesListing";
+import {createRoleAndAssignPermissions, getAllPermissions, getRolesAndPermissions} from "@/app/actions/account";
 
 
 const RolesPage = () => {
@@ -22,6 +23,14 @@ const RolesPage = () => {
         message: "",
         success: false,
     });
+
+    const [roles, setRoles] = useState<RolesAndPermissionsProps[]>([]);
+    const fetchRoles = async () => {
+        setRoles(await getRolesAndPermissions());
+    }
+    useEffect(() => {
+        fetchRoles().then();
+    }, []);
 
     // Get all permissions from the Database and set to a state variable
     const [allPermissions, setAllPermissions] = useState<{ name: string }[]>([]);
@@ -36,7 +45,7 @@ const RolesPage = () => {
     }, []);
 
     useEffect(() => {
-        const formatted = allPermissions.reduce<PermissionProps>((acc, { name }) => {
+        const formatted = allPermissions.reduce<PermissionProps>((acc, {name}) => {
             const [category, action] = name.split("-");
             if (!category || !action) return acc; // Skip invalid data
 
@@ -100,6 +109,8 @@ const RolesPage = () => {
         const {success, message} = await createRoleAndAssignPermissions(roleName, updatedPermissions);
         setModal({status: true, success, message})
         if (success) {
+            setSelectedPermissions({})
+            await fetchRoles();
             setShowForm(false);
             reset();
             await getPermissions();
@@ -107,7 +118,7 @@ const RolesPage = () => {
     }
 
     return (
-        <div className="flex flex-col gap-6 h-full">
+        <div className="flex flex-col gap-6 h-full w-full">
             <span className="text-[#64747a] text-2xl font-bold">Roles Management</span>
 
             {/* Search Bar */}
@@ -125,19 +136,19 @@ const RolesPage = () => {
             </Container>
 
             {/* Roles List Section */}
-            <Container className="rounded-md">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div
-                        onClick={() => setShowForm(true)}
-                        className={`flex flex-col items-center justify-center p-6 rounded-lg shadow-md border-dashed 
-                        border-2 cursor-pointer transition ${darkMode ? "border-gray-500 bg-gray-800 text-white" +
-                            " hover:border-gray-300" : "border-gray-400 bg-gray-100 hover:border-gray-600"}`}>
-                        <AddIcon fontSize="large"/>
-                        <span className="mt-2 text-lg font-semibold">
+            <Container className="flex rounded-md w-full gap-3 flex-wrap justify-stretch">
+                <div
+                    onClick={() => setShowForm(true)}
+                    className={`flex flex-col items-center justify-center p-6 rounded-lg shadow-md border-dashed 
+                        border-2 cursor-pointer transition ${darkMode ? "border-gray-500 bg-[#0f172a] text-white" +
+                        " hover:border-gray-300" : "border-gray-400 bg-white hover:border-gray-600"}
+                        flex-1 min-w-1/5`}>
+                    <AddIcon fontSize="large"/>
+                    <span className="mt-2 text-lg font-semibold">
                             Create New Role
                         </span>
-                    </div>
                 </div>
+                <RolesListing roles={roles}/>
             </Container>
 
             {/* Modal for add new role */}
@@ -213,7 +224,7 @@ const RolesPage = () => {
                                 })}
                             </div>
                         </div>
-                            <Button label={isSubmitting ? "Creating role ..." : "Create"}/>
+                        <Button label={isSubmitting ? "Creating role ..." : "Create"}/>
                     </form>
                 </ModalContainer>
             )}

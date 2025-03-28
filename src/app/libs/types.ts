@@ -115,5 +115,20 @@ export interface PendingApprovalProps {
 
 export interface PermissionProps {
     [key: string]: string[];
+}
 
+export interface RolesAndPermissionsProps {
+    name: string,
+    id: number,
+    Permission: {
+        name: string
+    }[]
+}
+
+export interface UserByRoleProps {
+    id: number;
+    email:string;
+    username: string;
+    accountStatus: string;
+    roleId: number | null;
 }
