@@ -8,36 +8,27 @@ datasource db {
 }
 
 model User {
-  id            Int           @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   first_name    String?
   middle_name   String?
   last_name     String?
   username      String
   mobile        String?
-  email         String        @unique
+  email         String       @unique
   passwordHash  String
   accountStatus String
-  registerdAt   DateTime      @default(now())
+  registerdAt   DateTime     @default(now())
   roleId        Int?
-  role          Role?         @relation(fields: [roleId], references: [id])
+  role          Role?        @relation(fields: [roleId], references: [id])
   TeamMember    TeamMember[]
   Project       Project[]
   session       session[]
   activity      activity[]
-  assignedTasks Task[]        @relation(name: "assignedUser")
-  createdTasks  Task[]        @relation(name: "creator")
-  UpdatedTask   Task[]        @relation(name: "updatedBy")
+  assignedTasks Task[]       @relation(name: "assignedUser")
+  createdTasks  Task[]       @relation(name: "creator")
+  UpdatedTask   Task[]       @relation(name: "updatedBy")
   comments      comments[]
   userStory     userStory[]
-  permissions   permissions[]
-}
-
-model Role {
-  id          Int           @id @default(autoincrement())
-  name        String        @unique
-  Users       User[]
-  TeamMember  TeamMember[]
-  permissions permissions[]
 }
 
 model Priority {
@@ -190,11 +181,16 @@ model userStory {
   user        User     @relation(fields: [userId], references: [id])
 }
 
-model permissions {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
-  roleId Int
-  userId Int
-  role   Role   @relation(fields: [roleId], references: [id])
-  user   User   @relation(fields: [userId], references: [id])
+model Role {
+  id         Int           @id @default(autoincrement())
+  name       String        @unique
+  Users      User[]
+  TeamMember TeamMember[]
+  Permission Permissions[] @relation(name: "RolePermissions")
+}
+
+model Permissions {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  Role Role[] @relation(name: "RolePermissions")
 }
