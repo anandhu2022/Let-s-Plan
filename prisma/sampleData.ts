@@ -34,6 +34,24 @@ const main = async () => {
         }
     });
     console.log("Super admin role created successfully");
+
+    await prisma.permissions.createMany({
+        data: [
+            {name: "PROJECT-CREATE"},
+            {name: "PROJECT-EDIT"},
+            {name: "PROJECT-DELETE"},
+            {name: "PROJECT-VIEW"},
+            {name: "TASK-CREATE"},
+            {name: "TASK-EDIT"},
+            {name: "TASK-DELETE"},
+            {name: "TASK-VIEW"},
+            {name: "USER-CREATE"},
+            {name: "USER-EDIT"},
+            {name: "USER-DELETE"},
+            {name: "USER-VIEW"},
+        ]
+    });
+    console.log("Permissions created successfully");
 }
 
 main().catch(console.error);
