@@ -21,3 +21,20 @@ export const getUsers = async () => {
         }
     });
 }
+
+export const createRoleAndPermissions = async (roleName: string, permissions: string[]) => {
+    const newRole = await prisma.role.create({
+        data: {name: roleName}
+    });
+
+    await Promise.all(permissions.map(async (permission) => {
+        await prisma.permissions.create({
+            data: {
+                roleId: newRole.id,
+                name: permission
+            }
+        });
+    }));
+
+    return newRole;
+}

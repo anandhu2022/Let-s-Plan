@@ -111,3 +111,9 @@ export interface PendingApprovalProps {
     registeredAt: string;
     mobile: string;
 }
+
+
+export interface PermissionProps {
+    [key: string]: string[];
+
+}

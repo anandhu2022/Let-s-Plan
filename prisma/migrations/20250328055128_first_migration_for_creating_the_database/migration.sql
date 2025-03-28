@@ -1,90 +1,20 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `first_name` VARCHAR(191) NULL,
+    `middle_name` VARCHAR(191) NULL,
+    `last_name` VARCHAR(191) NULL,
+    `username` VARCHAR(191) NOT NULL,
+    `mobile` VARCHAR(191) NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `passwordHash` VARCHAR(191) NOT NULL,
+    `accountStatus` VARCHAR(191) NOT NULL,
+    `registerdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `roleId` INTEGER NULL,
 
-  - You are about to drop the column `date` on the `task` table. All the data in the column will be lost.
-  - You are about to drop the column `taskStatus` on the `task` table. All the data in the column will be lost.
-  - You are about to drop the column `time` on the `task` table. All the data in the column will be lost.
-  - You are about to alter the column `description` on the `task` table. The data in that column could be lost. The data in that column will be cast from `VarChar(255)` to `VarChar(191)`.
-  - You are about to drop the column `password` on the `user` table. All the data in the column will be lost.
-  - You are about to drop the `admin_users` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `permissions` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `rolepermissions` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `roles` table. If the table is not empty, all the data it contains will be lost.
-  - A unique constraint covering the columns `[title]` on the table `Task` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `actualEndDate` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `actualStartDate` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `completionTime` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `createdAt` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `createdBy` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `estimatedTime` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `plannedEndDate` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `plannedStartDate` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `priorityId` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `projectId` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `statusId` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `updatedAt` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `updatedBy` to the `Task` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `passwordHash` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `roleId` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Made the column `username` on table `user` required. This step will fail if there are existing NULL values in that column.
-
-*/
--- DropForeignKey
-ALTER TABLE `rolepermissions` DROP FOREIGN KEY `RolePermissions_permissionId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `rolepermissions` DROP FOREIGN KEY `RolePermissions_roleId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `roles` DROP FOREIGN KEY `Roles_adminUserId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `task` DROP FOREIGN KEY `Task_userId_fkey`;
-
--- DropIndex
-DROP INDEX `Task_userId_fkey` ON `task`;
-
--- AlterTable
-ALTER TABLE `task` DROP COLUMN `date`,
-    DROP COLUMN `taskStatus`,
-    DROP COLUMN `time`,
-    ADD COLUMN `actualEndDate` DATETIME(3) NOT NULL,
-    ADD COLUMN `actualStartDate` DATETIME(3) NOT NULL,
-    ADD COLUMN `completionTime` DECIMAL(65, 30) NOT NULL,
-    ADD COLUMN `createdAt` DATETIME(3) NOT NULL,
-    ADD COLUMN `createdBy` INTEGER NOT NULL,
-    ADD COLUMN `estimatedTime` DECIMAL(65, 30) NOT NULL,
-    ADD COLUMN `plannedEndDate` DATETIME(3) NOT NULL,
-    ADD COLUMN `plannedStartDate` DATETIME(3) NOT NULL,
-    ADD COLUMN `priorityId` INTEGER NOT NULL,
-    ADD COLUMN `projectId` INTEGER NOT NULL,
-    ADD COLUMN `statusId` INTEGER NOT NULL,
-    ADD COLUMN `updatedAt` DATETIME(3) NOT NULL,
-    ADD COLUMN `updatedBy` INTEGER NOT NULL,
-    MODIFY `description` VARCHAR(191) NOT NULL;
-
--- AlterTable
-ALTER TABLE `user` DROP COLUMN `password`,
-    ADD COLUMN `first_name` VARCHAR(191) NULL,
-    ADD COLUMN `last_name` VARCHAR(191) NULL,
-    ADD COLUMN `middle_name` VARCHAR(191) NULL,
-    ADD COLUMN `mobile` VARCHAR(191) NULL,
-    ADD COLUMN `passwordHash` VARCHAR(191) NOT NULL,
-    ADD COLUMN `registerdAt` DATETIME(3) NULL,
-    ADD COLUMN `roleId` INTEGER NOT NULL,
-    MODIFY `username` VARCHAR(191) NOT NULL;
-
--- DropTable
-DROP TABLE `admin_users`;
-
--- DropTable
-DROP TABLE `permissions`;
-
--- DropTable
-DROP TABLE `rolepermissions`;
-
--- DropTable
-DROP TABLE `roles`;
+    UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Role` (
@@ -128,15 +58,16 @@ CREATE TABLE `ClientContact` (
 CREATE TABLE `Project` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
-    `plannedStartDate` DATETIME(3) NOT NULL,
-    `plannedEndDate` DATETIME(3) NOT NULL,
-    `actualStartDate` DATETIME(3) NOT NULL,
-    `actualEndDate` DATETIME(3) NOT NULL,
+    `plannedStartDate` VARCHAR(191) NULL,
+    `plannedEndDate` VARCHAR(191) NULL,
+    `actualStartDate` VARCHAR(191) NULL,
+    `actualEndDate` VARCHAR(191) NULL,
     `projectDescription` VARCHAR(191) NOT NULL,
-    `clientId` INTEGER NOT NULL,
-    `userId` INTEGER NOT NULL,
+    `clientId` INTEGER NULL,
     `priorityId` INTEGER NOT NULL,
+    `statusId` INTEGER NOT NULL,
     `clientContactId` INTEGER NULL,
+    `userId` INTEGER NULL,
 
     UNIQUE INDEX `Project_title_key`(`title`),
     PRIMARY KEY (`id`)
@@ -167,10 +98,11 @@ CREATE TABLE `session` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `sessionId` VARCHAR(191) NOT NULL,
-    `IPaddress` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL,
+    `ipAddress` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `expiresAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `session_sessionId_key`(`sessionId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -181,8 +113,32 @@ CREATE TABLE `activity` (
     `taskId` INTEGER NOT NULL,
     `activityType` VARCHAR(191) NOT NULL,
     `activityData` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Task` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `projectId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `createdBy` INTEGER NOT NULL,
+    `updatedBy` INTEGER NOT NULL,
+    `statusId` INTEGER NOT NULL,
+    `estimatedTime` DECIMAL(65, 30) NOT NULL,
+    `completionTime` DECIMAL(65, 30) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `plannedStartDate` DATETIME(3) NOT NULL,
+    `plannedEndDate` DATETIME(3) NOT NULL,
+    `actualStartDate` DATETIME(3) NOT NULL,
+    `actualEndDate` DATETIME(3) NOT NULL,
+    `priorityId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `Task_title_key`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -202,7 +158,7 @@ CREATE TABLE `comments` (
     `taskId` INTEGER NOT NULL,
     `projectId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -216,33 +172,44 @@ CREATE TABLE `userStory` (
     `projectId` INTEGER NOT NULL,
     `taskId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `userStory_title_key`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateIndex
-CREATE UNIQUE INDEX `Task_title_key` ON `Task`(`title`);
+-- CreateTable
+CREATE TABLE `permissions` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `roleId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `permissions_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `User` ADD CONSTRAINT `User_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `User` ADD CONSTRAINT `User_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ClientContact` ADD CONSTRAINT `ClientContact_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `ClientPartner`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Project` ADD CONSTRAINT `Project_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `Project` ADD CONSTRAINT `Project_priorityId_fkey` FOREIGN KEY (`priorityId`) REFERENCES `Priority`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Project` ADD CONSTRAINT `Project_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `ClientPartner`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Project` ADD CONSTRAINT `Project_clientId_fkey` FOREIGN KEY (`clientId`) REFERENCES `ClientPartner`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Project` ADD CONSTRAINT `Project_clientContactId_fkey` FOREIGN KEY (`clientContactId`) REFERENCES `ClientContact`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Project` ADD CONSTRAINT `Project_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Project` ADD CONSTRAINT `Project_statusId_fkey` FOREIGN KEY (`statusId`) REFERENCES `Status`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Team` ADD CONSTRAINT `Team_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -300,3 +267,9 @@ ALTER TABLE `userStory` ADD CONSTRAINT `userStory_taskId_fkey` FOREIGN KEY (`tas
 
 -- AddForeignKey
 ALTER TABLE `userStory` ADD CONSTRAINT `userStory_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `permissions` ADD CONSTRAINT `permissions_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `permissions` ADD CONSTRAINT `permissions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
