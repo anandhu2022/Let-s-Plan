@@ -22,19 +22,51 @@ export const getUsers = async () => {
     });
 }
 
-export const createRoleAndPermissions = async (roleName: string, permissions: string[]) => {
-    const newRole = await prisma.role.create({
-        data: {name: roleName}
-    });
-
-    await Promise.all(permissions.map(async (permission) => {
-        await prisma.permissions.create({
-            data: {
-                roleId: newRole.id,
-                name: permission
-            }
+export const createRoleAndAssignPermissions = async (roleName: string, permissionNames: string[]) => {
+    try {
+        const existingRole = await prisma.role.findFirst({
+            where: {name: roleName}
         });
-    }));
 
-    return newRole;
+        if (existingRole) {
+            return {
+                success: false,
+                message: "Role already exists."
+            }
+        }
+        const permissions = await Promise.all(
+            permissionNames.map(async (permissionName) => {
+                return prisma.permissions.findFirst({
+                    where: {name: permissionName}
+                });
+            })
+        );
+
+        const validPermissions = permissions.filter((p) => p !== null) as { id: number }[];
+
+        await prisma.role.create({
+            data: {
+                name: roleName,
+                Permission: {
+                    connect: validPermissions.map((permission) => ({id: permission.id})),
+                },
+            },
+        });
+
+        return {
+            success: true,
+            message: permissionNames.length > 0 ? "Successfully created roles and permissions" :
+                "Created role successfully.",
+        };
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to create role and assign permissions.");
+    }
+};
+
+
+export const getAllPermissions = async () => {
+    return prisma.permissions.findMany({
+        select: {name: true}
+    });
 }
