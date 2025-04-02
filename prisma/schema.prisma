@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -26,8 +26,6 @@ model Task {
   userId      Int
   taskStatus  String
   user        User    @relation(fields: [userId], references: [id], onDelete: NoAction)
-
-  @@index([userId], map: "Task_userId_fkey")
 }
 
 model Roles {
