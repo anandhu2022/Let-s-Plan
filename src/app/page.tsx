@@ -120,13 +120,6 @@ const Dashboard = () => {
                     <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
                         {tasksCounts.blocked}</p>
                 </div>
-
-                <div className={`p-2 sm:p-6 ${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm shadow-lg 
-                rounded-xl border-t-4 border-black flex flex-col flex-1 items-center min-w-25`}>
-                    <h2 className={`text-xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>Recent&nbsp;Tasks</h2>
-                    <p className={`text-3xl font-bold ${darkMode ? "text-gray-100" : "text-gray-900"}`}>
-                        ??</p>
-                </div>
             </div>
 
             <div className={`${darkMode ? "bg-black/40" : "bg-white/40"} backdrop-blur-sm p-6 shadow-lg 

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -20,9 +20,9 @@ model User {
 model Task {
   id          Int     @id @default(autoincrement())
   title       String
-  description String  @db.VarChar(255)
+  description String
   date        String
-  time        Decimal @db.Decimal(65, 3)
+  time        Decimal
   userId      Int
   taskStatus  String
   user        User    @relation(fields: [userId], references: [id], onDelete: NoAction)
